@@ -1,3 +1,15 @@
+import java.util.*;
+import java.io.*;
+
+
+class player extends actor {
+
+} // end player
+
+class banker extends actor {
+
+} // end banker
+
 
 
 
