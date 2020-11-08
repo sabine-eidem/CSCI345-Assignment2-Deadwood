@@ -1,4 +1,5 @@
 import java.util.*;
+import org.w3c.dom.Document;
 
 public class Group17Deadwood {
     
@@ -9,7 +10,18 @@ public class Group17Deadwood {
         String newName;
         Scanner in = new Scanner(System.in);
 
+        Document doc;
+        ParseXML parsing = new ParseXML();
+        try {
 
+            doc = parsing.getDocFromFile("board.xml");
+            parsing.readBoardData(doc);
+
+        } catch (Exception e) {
+
+            System.out.println("Error = " + e);
+
+        }
 
 
         System.out.println("Welcome to Deadwood!\nHow many players? (2-6)");

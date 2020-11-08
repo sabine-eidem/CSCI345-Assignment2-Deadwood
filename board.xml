@@ -31,6 +31,9 @@
       </part>
     </parts>
   </set>
+
+
+  
   <set name="Secret Hideout">
     <neighbors>
       <neighbor name="Church" />
@@ -262,6 +265,11 @@
       </part>
     </parts>
   </set>
+
+
+
+
+
   <trailer>
     <neighbors>
       <neighbor name="Main Street" />
@@ -270,6 +278,8 @@
     </neighbors>
     <area x="991" y="248" h="194" w="201" />
   </trailer>
+
+
   <office>
     <neighbors>
       <neighbor name="Train Station" />
