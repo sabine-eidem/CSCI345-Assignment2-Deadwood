@@ -10,12 +10,26 @@ public class Group17Deadwood {
         String newName;
         Scanner in = new Scanner(System.in);
 
-        Document doc;
-        ParseXML parsing = new ParseXML();
+        Document board;
+        ParseXML boardParsing = new ParseXML();
         try {
 
-            doc = parsing.getDocFromFile("board.xml");
-            parsing.readBoardData(doc);
+            board = boardParsing.getDocFromFile("board.xml");
+            boardParsing.readBoardData(board);
+
+        } catch (Exception e) {
+
+            System.out.println("Error = " + e);
+
+        }
+
+
+        Document cards;
+        ParseXML cardsParsing = new ParseXML();
+        try {
+
+            cards = cardsParsing.getDocFromFile("cards.xml");
+            cardsParsing.readCardData(cards);
 
         } catch (Exception e) {
 

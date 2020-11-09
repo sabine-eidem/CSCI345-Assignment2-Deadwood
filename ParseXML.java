@@ -12,28 +12,24 @@ import java.io.File;
 public class ParseXML {
     // building a document from the XML file
     // returns a Document object after loading the book.xml file.
-    public Document getDocFromFile(String filename)
-        throws ParserConfigurationException{
+    public Document getDocFromFile(String filename) throws ParserConfigurationException {
         {
-           DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-           DocumentBuilder db = dbf.newDocumentBuilder();
-           Document doc = null;
-           
-           try{
-               doc = db.parse(filename);
-           } catch (Exception ex){
-               System.out.println("XML parse failure");
-               ex.printStackTrace();
-           }
-           return doc;
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = null;
+
+            try {
+                doc = db.parse(filename);
+            } catch (Exception ex) {
+                System.out.println("XML parse failure");
+                ex.printStackTrace();
+            }
+            return doc;
         } // exception handling
 
     }
 
-
-
-
-    public void readBoardData(Document d){
+    public void readBoardData(Document d) {
         Element root = d.getDocumentElement();
         NodeList sets = root.getElementsByTagName("set");
 
@@ -59,15 +55,15 @@ public class ParseXML {
                     System.out.println("Neighbors:");
                     NodeList neighbors = sub.getChildNodes();
 
-                    for(int k = 0; k < neighbors.getLength(); k++){
+                    for (int k = 0; k < neighbors.getLength(); k++) {
                         Node neighbor = neighbors.item(k);
 
-                        if("neighbor".equals(neighbor.getNodeName())){
+                        if ("neighbor".equals(neighbor.getNodeName())) {
                             String currentNeighbor = neighbor.getAttributes().getNamedItem("name").getNodeValue();
 
                             System.out.println("  *" + currentNeighbor);
                         }
-                        //System.out.println(currentNeighbor);
+                        // System.out.println(currentNeighbor);
                     }
                 }
 
@@ -81,7 +77,7 @@ public class ParseXML {
 
                     for (int k = 0; k < takes.getLength(); k++) {
                         Node take = takes.item(k);
-                        
+
                         if ("take".equals(take.getNodeName())) {
                             String currentTake = take.getAttributes().getNamedItem("number").getNodeValue();
                             System.out.println("  *" + currentTake);
@@ -99,8 +95,9 @@ public class ParseXML {
                             String partName = part.getAttributes().getNamedItem("name").getNodeValue();
                             String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
                             String line = part.getTextContent();
-                            System.out.println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
-                            
+                            System.out
+                                    .println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
+
                         }
                         // System.out.println(currentNeighbor);
                     }
@@ -112,16 +109,11 @@ public class ParseXML {
 
         } // for set nodes
 
-
-
-
-        //TODO:
+        // TODO:
         /*
-            Need to grab from trailer node
-
-        */
-
-
+         * Need to grab from trailer node
+         * 
+         */
 
         // TODO:
         /*
@@ -129,91 +121,79 @@ public class ParseXML {
          * 
          */
 
-
-
-
-
-
     } // ends readBoardData
-    
 
+    public void readCardData(Document d) {
+        Element root = d.getDocumentElement();
 
+        NodeList cards = root.getElementsByTagName("card");
+        int cardNum = cards.getLength();
 
+        System.out.println(cardNum);
 
-    public void readCardData(Document d){
-Element root = d.getDocumentElement();
-        NodeList sets = root.getElementsByTagName("set");
+        for (int i = 0; i < cardNum; i++) {
+            String number;
+            String budget;
+            String sceneName;
+            String desc;
 
-        System.out.println();
-        for (int i = 0; i < sets.getLength(); i++) {
+            Node card = cards.item(i);
+            sceneName = card.getAttributes().getNamedItem("name").getNodeValue();
+            budget = card.getAttributes().getNamedItem("budget").getNodeValue();
 
-            System.out.println("Printing information for set " + (i + 1));
+            System.out.println(sceneName + "\n  *Budget:" + budget);
 
-            // reads data from the nodes
-            Node set = sets.item(i);
-            String setName = set.getAttributes().getNamedItem("name").getNodeValue();
-            System.out.println("Set name = " + setName);
+            NodeList children = card.getChildNodes();
+                /*
+                    children map:
+                        -scene
+                        -part
+                            -area
+                            -line
+                */
 
-            // reads data
-
-            NodeList children = set.getChildNodes();
-
-            for (int j = 0; j < children.getLength(); j++) {
-
+            for(int j = 0; j < children.getLength(); j++) {
                 Node sub = children.item(j);
 
-                if ("neighbors".equals(sub.getNodeName())) {
-                    System.out.println("Neighbors:");
-                    NodeList neighbors = sub.getChildNodes();
+                if("scene".equals(sub.getNodeName())){
+                    number = sub.getAttributes().getNamedItem("number").getNodeValue();
+                    System.out.println("  *Number:" + number);
 
-                    for(int k = 0; k < neighbors.getLength(); k++){
-                        Node neighbor = neighbors.item(k);
+                    desc = sub.getTextContent();
+                    System.out.println("  *Description: " + desc);
 
-                        if("neighbor".equals(neighbor.getNodeName())){
-                            String currentNeighbor = neighbor.getAttributes().getNamedItem("name").getNodeValue();
+                } else if("part".equals(sub.getNodeName())){
 
-                            System.out.println("  *" + currentNeighbor);
-                        }
-                        //System.out.println(currentNeighbor);
-                    }
-                } else if ("area".equals(sub.getNodeName())) {
-                    String authorName = sub.getTextContent();
-                    System.out.println("Area = " + authorName);
-
-                } else if ("takes".equals(sub.getNodeName())) {
-                    System.out.println("Takes:");
-                    NodeList takes = sub.getChildNodes();
-
-                    for (int k = 0; k < takes.getLength(); k++) {
-                        Node take = takes.item(k);
-                        
-                        if ("take".equals(take.getNodeName())) {
-                            String currentTake = take.getAttributes().getNamedItem("number").getNodeValue();
-                            System.out.println("  *" + currentTake);
-                        }
-                        // System.out.println(currentNeighbor);
-                    }
-                } else if ("parts".equals(sub.getNodeName())) {
-                    System.out.println("Parts:");
+                    //number of parts is not the same for each card.
+                    //must account for that before hand
                     NodeList parts = sub.getChildNodes();
+                    
+                    String partName = sub.getAttributes().getNamedItem("name").getNodeValue();
+                    String partLevel = sub.getAttributes().getNamedItem("level").getNodeValue();
 
-                    for (int k = 0; k < parts.getLength(); k++) {
+                    System.out.println("Part" + ": " + partName + "\n ->level(" + partLevel + ")");
+
+
+                    for(int k = 0; k < parts.getLength(); k++) {
                         Node part = parts.item(k);
 
-                        if ("part".equals(part.getNodeName())) {
-                            String partName = part.getAttributes().getNamedItem("name").getNodeValue();
-                            String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
-                            String line = part.getTextContent();
-                            System.out.println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
-                            
-                        }
-                        // System.out.println(currentNeighbor);
+                        
+                        
                     }
+                    System.out.println();
+
                 }
 
-            } // for childnodes
 
-            System.out.println("\n");
+
+            }//end parsing card children
+
+
+
+
+            System.out.println();
+        } // end parsing cards
+        System.out.println("\n");
 
     }
 }
