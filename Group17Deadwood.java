@@ -8,6 +8,16 @@ public class Group17Deadwood {
         //Make array of class Player called players of size how many players
         int playerCount;
         String newName;
+
+
+        List<Scene> scenes = new ArrayList<Scene>();
+
+
+
+
+
+
+
         Scanner in = new Scanner(System.in);
 
         Document board;
@@ -29,7 +39,7 @@ public class Group17Deadwood {
         try {
 
             cards = cardsParsing.getDocFromFile("cards.xml");
-            //cardsParsing.readCardData(cards);
+            scenes = cardsParsing.readCardData(cards);
 
         } catch (Exception e) {
 
@@ -37,7 +47,15 @@ public class Group17Deadwood {
 
         }
 
+        
+        
+        for(int i = 0; i < scenes.size(); i++){
+            scenes.get(i).printSceneInfo();
 
+            System.out.println("***************");
+        }
+        System.out.println(scenes.size());
+        
         System.out.println("Welcome to Deadwood!\nHow many players? (2-6)");
         // playerCount = in.nextInt();
         // Player[] Players = new Player[playerCount];

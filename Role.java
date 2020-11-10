@@ -6,12 +6,11 @@ public class Role {
     private boolean taken;
     private boolean onScene;
 
-    public Role(String newName, int rank, String newLine, boolean cardStatus) {
+    public Role(String newName, int rank, String newLine) {
         name = newName;
         reqRank = rank;
-        taken = false;
-        onScene = cardStatus;
         line = newLine;
+        taken = false;
     }
 
     public String getName() {
@@ -43,5 +42,13 @@ public class Role {
         taken = false;
         return;
     }
-    
+
+    public void printRoleInfo() {
+        System.out.println("\tRole:");
+        System.out.println("\t  Name: " + name);
+        System.out.println("\t  Rank: " + reqRank);
+        System.out.println("\t  Line: " + line);
+
+    }
+
 }
