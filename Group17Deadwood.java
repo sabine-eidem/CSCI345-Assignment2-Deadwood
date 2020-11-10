@@ -29,7 +29,7 @@ public class Group17Deadwood {
         try {
 
             cards = cardsParsing.getDocFromFile("cards.xml");
-            cardsParsing.readCardData(cards);
+            //cardsParsing.readCardData(cards);
 
         } catch (Exception e) {
 

@@ -673,7 +673,7 @@
     </part>
     <part name="Jack" level="6">
       <area x="145" y="47" h="40" w="40" />
-      <line>Here we go again!"</line>
+      <line>Here we go again!</line>
     </part>
   </card>
 </cards>
