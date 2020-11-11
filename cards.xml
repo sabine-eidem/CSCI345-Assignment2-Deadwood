@@ -21,7 +21,7 @@
 
 
 
-  
+
   <card name="Law and the Old West" img="02.png" budget="3">
     <scene number="20">
       Charlie "Three Guns" Henderson cooperates with Johnny Law and reluctantly
@@ -663,6 +663,11 @@
       <line>None shall pass!</line>
     </part>
   </card>
+
+
+
+
+  
   <card name="Custer's Other Stands" img="40.png" budget="5">
     <scene number="40">
       General George Armstrong Custer clinches another victory at the battle of

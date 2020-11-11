@@ -21,7 +21,7 @@ public class ParseXML {
             try {
                 doc = db.parse(filename);
             } catch (Exception ex) {
-                System.out.println("XML parse failure");
+                //.out.println("XML parse failure");
                 ex.printStackTrace();
             }
             return doc;
@@ -29,30 +29,42 @@ public class ParseXML {
 
     }
 
-    public void readBoardData(Document d) {
+    public List<Room> readSetData(Document d) {
+
+        
         Element root = d.getDocumentElement();
         NodeList sets = root.getElementsByTagName("set");
-
-        System.out.println();
+        
+        List<Room> addingRooms = new ArrayList<Room>();
+        //System.out.println();
         for (int i = 0; i < sets.getLength(); i++) {
+                List<Role> eachRole = new ArrayList<>();
+                List<String> neighborsList = new ArrayList<String>();
+                List<Boolean>shotList = new ArrayList<Boolean>();
+                String setName;
+                String currentTake = "-1";
 
-            System.out.println("Printing information for set " + (i + 1));
+            //System.out.println("Printing information for set " + (i + 1));
 
             // reads data from the nodes
             Node set = sets.item(i);
-            String setName = set.getAttributes().getNamedItem("name").getNodeValue();
-            System.out.println("Set name = " + setName);
+            setName = set.getAttributes().getNamedItem("name").getNodeValue();
+            //System.out.println("Set name = " + setName);
 
             // reads data
 
             NodeList children = set.getChildNodes();
 
+
+            //going though each set's node
             for (int j = 0; j < children.getLength(); j++) {
+
+                
 
                 Node sub = children.item(j);
 
                 if ("neighbors".equals(sub.getNodeName())) {
-                    System.out.println("Neighbors:");
+                    //System.out.println("Neighbors:");
                     NodeList neighbors = sub.getChildNodes();
 
                     for (int k = 0; k < neighbors.getLength(); k++) {
@@ -60,32 +72,31 @@ public class ParseXML {
 
                         if ("neighbor".equals(neighbor.getNodeName())) {
                             String currentNeighbor = neighbor.getAttributes().getNamedItem("name").getNodeValue();
-
-                            System.out.println("  *" + currentNeighbor);
+                            neighborsList.add(currentNeighbor);
+                            //System.out.println("  *" + currentNeighbor);
                         }
                         // System.out.println(currentNeighbor);
                     }
-                }
-
-                else if ("area".equals(sub.getNodeName())) {
+                } else if ("area".equals(sub.getNodeName())) {
                     String authorName = sub.getTextContent();
-                    System.out.println("Area = " + authorName);
+                    //System.out.println("Area = " + authorName);
 
                 } else if ("takes".equals(sub.getNodeName())) {
-                    System.out.println("Takes:");
+                    //System.out.println("Takes:");
                     NodeList takes = sub.getChildNodes();
 
                     for (int k = 0; k < takes.getLength(); k++) {
                         Node take = takes.item(k);
 
                         if ("take".equals(take.getNodeName())) {
-                            String currentTake = take.getAttributes().getNamedItem("number").getNodeValue();
-                            System.out.println("  *" + currentTake);
+                            currentTake = take.getAttributes().getNamedItem("number").getNodeValue();
+                            //System.out.println("  *" + currentTake);
+                            shotList.add(false);
                         }
                         // System.out.println(currentNeighbor);
                     }
                 } else if ("parts".equals(sub.getNodeName())) {
-                    System.out.println("Parts:");
+                    //System.out.println("Parts:");
                     NodeList parts = sub.getChildNodes();
 
                     for (int k = 0; k < parts.getLength(); k++) {
@@ -95,8 +106,9 @@ public class ParseXML {
                             String partName = part.getAttributes().getNamedItem("name").getNodeValue();
                             String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
                             String line = part.getTextContent();
-                            System.out
-                                    .println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
+                            eachRole.add(new Role(partName, Integer.parseInt(partLevel), line));
+                            //System.out
+                              //      .println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
 
                         }
                         // System.out.println(currentNeighbor);
@@ -104,22 +116,32 @@ public class ParseXML {
                 }
 
             } // for childnodes
-
-            System.out.println("\n");
-
+            
+            addingRooms.add(new Room(setName, shotList, neighborsList, eachRole));
+            //System.out.println("\n");
+            
+            
         } // for set nodes
+        return addingRooms;
+        
 
-        // TODO:
-        /*
-         * Need to grab from trailer node
-         * 
-         */
+        
+        
+    } // ends readBoardData
 
+
+
+
+
+
+    public List<Room> readTrailerData(Document d){
+        Element root = d.getDocumentElement();
         NodeList trailers = root.getElementsByTagName("trailer");
 
+        List<Room> addingRooms = new ArrayList<Room>();
         for (int i = 0; i < trailers.getLength(); i++) {
 
-            System.out.println("******* Printing information for trailer *******");
+            //System.out.println("******* Printing information for trailer *******");
 
             // reads data from the nodes
             Node trailer = trailers.item(i);
@@ -133,7 +155,7 @@ public class ParseXML {
                 Node sub = children.item(j);
 
                 if ("neighbors".equals(sub.getNodeName())) {
-                    System.out.println("Neighbors:");
+                    //System.out.println("Neighbors:");
                     NodeList neighbors = sub.getChildNodes();
 
                     for (int k = 0; k < neighbors.getLength(); k++) {
@@ -142,7 +164,7 @@ public class ParseXML {
                         if ("neighbor".equals(neighbor.getNodeName())) {
                             String currentNeighbor = neighbor.getAttributes().getNamedItem("name").getNodeValue();
 
-                            System.out.println("  *" + currentNeighbor);
+                            //System.out.println("  *" + currentNeighbor);
                         }
                         // System.out.println(currentNeighbor);
                     }
@@ -153,26 +175,32 @@ public class ParseXML {
                     w = sub.getAttributes().getNamedItem("w").getNodeValue();
                     y = sub.getAttributes().getNamedItem("y").getNodeValue();
 
-                    System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
+                    //System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
                 }
 
             } // for childnodes
 
-            System.out.println("\n");
-
+            
+            //System.out.println("\n");
+            
         } // for set nodes
+        return addingRooms;
+    }
 
-        // TODO:
-        /*
-         * Need to grab from office node
-         * 
-         */
 
+
+
+
+    public List<Room> readOfficeData(Document d) {
+
+        List<Room> addingRooms = new ArrayList<Room>();
+
+        Element root = d.getDocumentElement();
         NodeList offices = root.getElementsByTagName("office");
 
         for (int i = 0; i < offices.getLength(); i++) {
 
-            System.out.println("******* Printing information for office *******");
+            // System.out.println("******* Printing information for office *******");
 
             // reads data from the nodes
             Node office = offices.item(i);
@@ -186,7 +214,7 @@ public class ParseXML {
                 Node sub = children.item(j);
 
                 if ("neighbors".equals(sub.getNodeName())) {
-                    System.out.println("Neighbors:");
+                    // System.out.println("Neighbors:");
                     NodeList neighbors = sub.getChildNodes();
 
                     for (int k = 0; k < neighbors.getLength(); k++) {
@@ -195,7 +223,7 @@ public class ParseXML {
                         if ("neighbor".equals(neighbor.getNodeName())) {
                             String currentNeighbor = neighbor.getAttributes().getNamedItem("name").getNodeValue();
 
-                            System.out.println("  *" + currentNeighbor);
+                            // System.out.println(" *" + currentNeighbor);
                         }
                         // System.out.println(currentNeighbor);
                     }
@@ -206,9 +234,9 @@ public class ParseXML {
                     w = sub.getAttributes().getNamedItem("w").getNodeValue();
                     y = sub.getAttributes().getNamedItem("y").getNodeValue();
 
-                    System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
+                    // System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
                 } else if ("upgrades".equals(sub.getNodeName())) {
-                    System.out.println("Upgrades: ");
+                    // System.out.println("Upgrades: ");
                     NodeList upgrades = sub.getChildNodes();
 
                     for (int k = 0; k < upgrades.getLength(); k++) {
@@ -219,21 +247,26 @@ public class ParseXML {
                             String currency = upgrade.getAttributes().getNamedItem("currency").getNodeValue();
                             String amt = upgrade.getAttributes().getNamedItem("amt").getNodeValue();
 
-                            System.out.println("  *level\t" + level);
-                            System.out.println("  *currency\t" + currency);
-                            System.out.println("  *amt  \t" + amt);
-                            System.out.println();
+                            // System.out.println(" *level\t" + level);
+                            // System.out.println(" *currency\t" + currency);
+                            // System.out.println(" *amt \t" + amt);
+                            // System.out.println();
                         }
                         // System.out.println(currentNeighbor);
                     }
                 }
 
             } // for childnodes
-
-            System.out.println("\n");
+              // System.out.println("\n");
 
         } // for set nodes
-    } // ends readBoardData
+        return addingRooms;
+    }
+
+
+
+
+
 
     // TODO:
 
@@ -261,19 +294,20 @@ public class ParseXML {
         NodeList cards = root.getElementsByTagName("card");
         int cardNum = cards.getLength();
 
-        System.out.println(cardNum);
+        //System.out.println(cardNum);
 
         for (int i = 0; i < cardNum; i++) {
             String number = "-1";
             String budget;
             String sceneName;
             String desc = "-1";
-
+            
+            List<Role> eachRole = new ArrayList<>();
             Node card = cards.item(i);
             sceneName = card.getAttributes().getNamedItem("name").getNodeValue();
             budget = card.getAttributes().getNamedItem("budget").getNodeValue();
 
-            System.out.println(sceneName + "\n  *Budget:" + budget);
+            //System.out.println(sceneName + "\n  *Budget:" + budget);
 
             NodeList children = card.getChildNodes();
             /*
@@ -288,14 +322,13 @@ public class ParseXML {
                 Node sub = children.item(j);
 
                 String line, partLevel, partName;
-                List<Role> eachRole = new ArrayList<>();
 
                 if ("scene".equals(sub.getNodeName())) {
                     number = sub.getAttributes().getNamedItem("number").getNodeValue();
-                    System.out.println("  *Number:" + number);
+                    //System.out.println("  *Number:" + number);
 
                     desc = sub.getTextContent();
-                    System.out.println("  *Description: " + desc);
+                    //System.out.println("  *Description: " + desc);
 
                 } else if ("part".equals(sub.getNodeName())) {
 
@@ -313,9 +346,9 @@ public class ParseXML {
                         Node part = parts.item(k);
 
                         if ("line".equals(part.getNodeName())) {
-                            System.out.println("Part" + ": " + partName + "\n ->level " + partLevel);
+                            //System.out.println("Part" + ": " + partName + "\n ->level " + partLevel);
                             line = part.getTextContent();
-                            System.out.println(" ->line \"" + line + "\"");
+                            //System.out.println(" ->line \"" + line + "\"");
                             eachRole.add(new Role(partName, Integer.parseInt(partLevel), line));    
                         } else if ("area".equals(part.getNodeName())) {
                             String x, y, h, w;
@@ -324,21 +357,21 @@ public class ParseXML {
                             w = part.getAttributes().getNamedItem("w").getNodeValue();
                             y = part.getAttributes().getNamedItem("y").getNodeValue();
 
-                            System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
+                            //System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
                         }
 
                     }
-                    System.out.println("\n");
+                    //System.out.println("\n");
                 }
                 // This is were all the data for each part of the arraylist is added
 
                 // THis is were all the data for scene is added
-                addingScenes.add(new Scene(sceneName, Integer.parseInt(budget), eachRole, Integer.parseInt(number), desc));
-
+                
             } // end parsing card children
-            System.out.println();
+            addingScenes.add(new Scene(sceneName, Integer.parseInt(budget), eachRole, Integer.parseInt(number), desc));
+            //System.out.println();
         } // end parsing cards
-        System.out.println("\n");
+        //System.out.println("\n");
 
         return addingScenes;
     }

@@ -88,4 +88,8 @@ public class Player {
         return chips;
     }
 
+    public void printName() {
+        System.out.println(" -" + name);
+    }
+
 }

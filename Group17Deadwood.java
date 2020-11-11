@@ -11,11 +11,8 @@ public class Group17Deadwood {
 
 
         List<Scene> scenes = new ArrayList<Scene>();
-
-
-
-
-
+        List<Room> rooms = new ArrayList<Room>();
+        List<Player> players = new ArrayList<Player>();
 
 
         Scanner in = new Scanner(System.in);
@@ -25,7 +22,7 @@ public class Group17Deadwood {
         try {
 
             board = boardParsing.getDocFromFile("board.xml");
-            boardParsing.readBoardData(board);
+            rooms = boardParsing.readSetData(board);
 
         } catch (Exception e) {
 
@@ -46,25 +43,69 @@ public class Group17Deadwood {
             System.out.println("Error = " + e);
 
         }
-
-        
-        
         for(int i = 0; i < scenes.size(); i++){
             scenes.get(i).printSceneInfo();
 
-            System.out.println("***************");
+            System.out.println("***************\n");
         }
         System.out.println(scenes.size());
+        System.out.println("***************\n***************\n***************\n");
+        for(int i = 0; i < rooms.size(); i++) {
+            rooms.get(i).printRoom();
+            System.out.println("***************\n");
+        }
         
-        System.out.println("Welcome to Deadwood!\nHow many players? (2-6)");
-        // playerCount = in.nextInt();
-        // Player[] Players = new Player[playerCount];
-        // for(int i = 0; i < playerCount; i++){
-        //     System.out.print("Player " + i+1 + "what's your name: ");
-        //     newName = in.nextLine();
-        //     Players[1] = new Player(newName);
-        // }
+
+
+
+
+
+
+
+
+        int days 4;
+        int credits = 0;
+        int rank = 1;
+        // 2-3 players = 3 days
+        // 4 no change
+        // 5 each player starts with 2 credits
+        // 6 each player starts with 4 credits
+        // 7-8 each player starts with rank 2
+
+
+
+
+        System.out.print("Welcome to Deadwood!\nHow many players? (2-6): ");
+        playerCount = in.nextInt();
+        newName = in.nextLine();
+        for(int i = 0; i < playerCount; i++){
+            System.out.print("Player " + (i+1) + " what's your name: ");
+            newName = in.nextLine();
+            players.add(new Player(newName));
+        }
+
+        System.out.println("Players:");
+        for(int i = 0; i < players.size(); i++){
+            players.get(i).printName();
+        }
+
+
+
+
+
+
+
+        //Tunrs 
+
+
+
+
+
+
+
 
         in.close();
     }
+
+
 }
