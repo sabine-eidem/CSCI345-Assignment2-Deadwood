@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
@@ -6,6 +7,7 @@ public class Room {
     private int currentShots;
     private Scene currentScene;
     private List<String> neighbors;
+    private List<Room> roomNeighbors;
     private List<Role> offCardRoles;
     private List<Boolean> shotList;
     private boolean visited;
@@ -15,8 +17,30 @@ public class Room {
         shotList = shots;
         neighbors = neighborNames;
         offCardRoles = roles;
+        //roomNeighbors = convertNeighborsToRoomClass();
+    }
+    
+    public Room(String newName, List<String> neighborNames) {
+        name = newName;
+        neighbors = neighborNames;
+        shotList = new ArrayList<>();
+        offCardRoles = new ArrayList<>();
+        //roomNeighbors = convertNeighborsToRoomClass();
     }
 
+
+    //trying to get the room object so that I can easily saw it out 
+    //ended up not liking this idea
+
+    // public List<Room> convertNeighborsToRoomClass(){
+    //     List<Room> classNeighbors = new ArrayList<Room>();
+    //     Board tempBoard = new Board();
+    //     for(int i = 0; i < tempBoard.getRooms().size(); i++){
+    //         tempBoard.rooms.
+    //     }
+
+    //     return classNeighbors;
+    // }
 
 
     public void printRoom() {
@@ -31,7 +55,7 @@ public class Room {
         System.out.println("Neighbors:");
 
         for(int i = 0; i < neighbors.size(); i++){
-            System.out.println(" -" + neighbors.get(i));
+            System.out.println(" -" + (i) + ")" + neighbors.get(i));
         }
     }
 
@@ -43,6 +67,10 @@ public class Room {
         }
     }
 
+    public String printNeighbor(int i) {
+        return neighbors.get(i);
+    }
+
 
     public void printShotList(){
         System.out.println("Shots:");
@@ -51,5 +79,9 @@ public class Room {
             System.out.println(" -Shot " + i + " taken: " + shotList.get(i));
         }
 
+    }
+
+    public String getName(){
+        return name;
     }
 }

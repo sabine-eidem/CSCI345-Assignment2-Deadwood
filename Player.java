@@ -3,17 +3,21 @@ public class Player {
     private String name;
     private int dollars, credits, rank, chips;
     private boolean hasRole;
+    private boolean hasTurn;
+    private boolean hasMoved;
     private Role currentRole;
     private Room currentRoom;
 
 
-    public Player (String Name){
+    public Player (String Name, int creds, int dank, Room rome){
         name = Name;
         dollars = 0;
-        credits = 0;
-        rank = 1;
+        credits = creds;
+        rank = dank;
+        currentRoom =rome;
         hasRole = false;
         chips = 0;
+        hasMoved = false;
     }
 
     public String getName() {
@@ -36,6 +40,26 @@ public class Player {
 
     }
 
+    public void isTurn(){
+        hasTurn = true;
+    }
+
+    public void endTurn(){
+        hasTurn = false;
+        hasMoved = false;
+    }
+
+    public boolean getTurnStatus(){
+        return hasTurn;
+    }
+
+    public boolean hasMoved(){
+        return hasMoved;
+    }
+
+    public void finishedMove(){
+        hasMoved = true;
+    }
 
     public boolean hasRole() {
         return hasRole;
@@ -49,17 +73,16 @@ public class Player {
         return currentRoom;
     }
 
+    public String getRoomName(){
+        return currentRoom.getName();
+    }
+
     public void setRoom(Room newRoom) {
         currentRoom = newRoom;
     }
 
     public void rehearse() {
         chips++;
-        return;
-    }
-
-    public void moveTo(Room newRoom) {
-        currentRoom = newRoom;
         return;
     }
 
@@ -90,6 +113,18 @@ public class Player {
 
     public void printName() {
         System.out.println(" -" + name);
+    }
+
+    public void printNeighbors(){
+        currentRoom.printNeighbors();
+    }
+
+    public String print1Neighbor(int i){
+        return currentRoom.printNeighbor(i);
+    }
+
+    public void showRoles(){
+
     }
 
 }

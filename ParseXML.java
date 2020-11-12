@@ -139,6 +139,9 @@ public class ParseXML {
         NodeList trailers = root.getElementsByTagName("trailer");
 
         List<Room> addingRooms = new ArrayList<Room>();
+        List<String> neighborsList = new ArrayList<String>();
+
+
         for (int i = 0; i < trailers.getLength(); i++) {
 
             //System.out.println("******* Printing information for trailer *******");
@@ -163,6 +166,7 @@ public class ParseXML {
 
                         if ("neighbor".equals(neighbor.getNodeName())) {
                             String currentNeighbor = neighbor.getAttributes().getNamedItem("name").getNodeValue();
+                            neighborsList.add(currentNeighbor);
 
                             //System.out.println("  *" + currentNeighbor);
                         }
@@ -179,6 +183,7 @@ public class ParseXML {
                 }
 
             } // for childnodes
+            addingRooms.add(new Room("trailer", neighborsList));
 
             
             //System.out.println("\n");
@@ -194,6 +199,7 @@ public class ParseXML {
     public List<Room> readOfficeData(Document d) {
 
         List<Room> addingRooms = new ArrayList<Room>();
+        List<String> neighborsList = new ArrayList<String>();
 
         Element root = d.getDocumentElement();
         NodeList offices = root.getElementsByTagName("office");
@@ -222,6 +228,7 @@ public class ParseXML {
 
                         if ("neighbor".equals(neighbor.getNodeName())) {
                             String currentNeighbor = neighbor.getAttributes().getNamedItem("name").getNodeValue();
+                            neighborsList.add(currentNeighbor);
 
                             // System.out.println(" *" + currentNeighbor);
                         }
@@ -257,6 +264,7 @@ public class ParseXML {
                 }
 
             } // for childnodes
+            addingRooms.add(new Room("office", neighborsList));
               // System.out.println("\n");
 
         } // for set nodes
