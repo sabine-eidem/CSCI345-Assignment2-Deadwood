@@ -1,7 +1,7 @@
 import java.util.*;
 import org.w3c.dom.Document;
 
-public class Group17Deadwood {
+public class Deadwood {
     
     public static void main(String args[]) {
         // Make array of class Player called players of size how many players
