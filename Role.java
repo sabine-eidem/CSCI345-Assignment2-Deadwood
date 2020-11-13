@@ -44,7 +44,7 @@ public class Role {
     }
 
     public void printRoleInfo() {
-        System.out.println("\tRole:");
+        System.out.println("Role:");
         System.out.println("\t  Name: " + name);
         System.out.println("\t  Line: " + line);
         System.out.println("\t  Rank: " + reqRank);

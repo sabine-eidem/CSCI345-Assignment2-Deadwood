@@ -32,6 +32,10 @@ public class Scene {
     return roles;
   }
 
+  public Role getRole(int i){
+    return roles.get(i);
+  }
+
   public boolean checkIfRolesTaken() {
     for (int i = 0; i < roles.size(); i++) {
       if (roles.get(i).isTaken()) {
@@ -59,20 +63,30 @@ public class Scene {
 
   public void wrap() {
     isActive = false;
-    return;
   }
 
   public void assign() {
     isAssigned = true;
-    return;
   }
 
   public void printSceneInfo() {
-    System.out.println("Name: " + name);
+    System.out.println("Card Name: " + name);
     System.out.println("Budget: " + budget);
     System.out.println("Description " + description);
 
     for(int i = 0; i < roles.size(); i++){
+      roles.get(i).printRoleInfo();
+    }
+  }
+
+
+  public void printSceneInfo(int offCardRoleCount) {
+    System.out.println("Card Name: " + name);
+    System.out.println("Budget: " + budget);
+    System.out.println("Description " + description);
+
+    for (int i = 0; i < roles.size(); i++) {
+      System.out.print("\t" + (i + 1 + offCardRoleCount) + ") ");
       roles.get(i).printRoleInfo();
     }
   }

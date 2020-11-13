@@ -10,13 +10,19 @@ public class Room {
     private List<Room> roomNeighbors;
     private List<Role> offCardRoles;
     private List<Boolean> shotList;
+    private List<Player> onCardPlayers;
+    private List<Player> offCardPlayers;
     private boolean visited;
+    private boolean wrapped;
 
     public Room(String newName, List<Boolean> shots, List<String> neighborNames, List<Role> roles) {
         name = newName;
         shotList = shots;
         neighbors = neighborNames;
         offCardRoles = roles;
+        wrapped = false;
+        offCardPlayers = new ArrayList<>();
+        onCardPlayers = new ArrayList<>();
         //roomNeighbors = convertNeighborsToRoomClass();
     }
     
@@ -25,6 +31,9 @@ public class Room {
         neighbors = neighborNames;
         shotList = new ArrayList<>();
         offCardRoles = new ArrayList<>();
+        wrapped = false;
+        offCardPlayers = new ArrayList<>();
+        onCardPlayers = new ArrayList<>();
         //roomNeighbors = convertNeighborsToRoomClass();
     }
 
@@ -55,7 +64,7 @@ public class Room {
         System.out.println("Neighbors:");
 
         for(int i = 0; i < neighbors.size(); i++){
-            System.out.println(" -" + (i) + ")" + neighbors.get(i));
+            System.out.println(" -" + (i+1) + ")" + neighbors.get(i));
         }
     }
 
@@ -63,6 +72,7 @@ public class Room {
         System.out.println("OffCardRoles:");
 
         for(int i = 0; i < offCardRoles.size(); i++){
+            System.out.print("\t" + (i+1) + ") ");
             offCardRoles.get(i).printRoleInfo();
         }
     }
@@ -76,12 +86,83 @@ public class Room {
         System.out.println("Shots:");
 
         for(int i = 0; i <shotList.size(); i++){
-            System.out.println(" -Shot " + i + " taken: " + shotList.get(i));
+            System.out.println(" -Shot " + (i+1) + " taken: " + shotList.get(i));
         }
 
+    }
+
+    // return true if list is all true (then its a wrap!)
+    public boolean takeOffAShot(){
+        for(int i = 0; i < shotList.size(); i++){
+            if(i == shotList.size()-1){
+                shotList.set(i, true);
+                System.out.println("ITS A WRAP!");
+                //It's a wrap!
+                wrapped = true;
+                wrappedPayout();
+                return true;
+            } else if(shotList.get(i) == false){
+                shotList.set(i, true);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Scene getScene(){
+        return currentScene;
+    }
+
+    public void assignScene(Scene newScene){
+        currentScene = newScene;
+        currentScene.assign();
     }
 
     public String getName(){
         return name;
     }
+
+    public boolean getWraped(){
+        return wrapped;
+    }
+
+    public int getOffCardRoleCount(){
+        return offCardRoles.size();
+    }
+
+    public boolean isRoleTaken(int i){
+        return offCardRoles.get(i).isTaken();
+    }
+
+    public Role getOffCardRole(int i){
+        return offCardRoles.get(i);
+    }
+
+    public void addPlayerToCardList(Player player){
+        onCardPlayers.add(player);
+    }
+
+    public void addPlayerToOffCardList(Player player){
+        offCardPlayers.add(player);
+    }
+
+    public void wrappedPayout(){
+
+        try{
+
+            for(int i = 0; i < offCardPlayers.size(); i ++){
+                offCardPlayers.get(i).printName();
+            }
+    
+            for (int i = 0; i < onCardPlayers.size(); i++) {
+                onCardPlayers.get(i).printName();
+            }
+        } catch (Exception e){
+
+        }
+
+
+    }
+
+
 }

@@ -4,20 +4,21 @@ public class Player {
     private int dollars, credits, rank, chips;
     private boolean hasRole;
     private boolean hasTurn;
+    private boolean onCard;
     private boolean hasMoved;
     private Role currentRole;
     private Room currentRoom;
 
 
-    public Player (String Name, int creds, int dank, Room rome){
+    public Player (String Name, int creds, int Rank){
         name = Name;
         dollars = 0;
         credits = creds;
-        rank = dank;
-        currentRoom =rome;
+        rank = Rank;
         hasRole = false;
         chips = 0;
         hasMoved = false;
+        onCard = false;
     }
 
     public String getName() {
@@ -29,15 +30,55 @@ public class Player {
         for (int i = 0; i < numDice; i++) {
             roll += (int) (Math.random() * 6) + 1;
         }
-        return roll;
+        return roll + chips;
+    }
+
+    public void act(){
+        
+        if(!currentRoom.getWraped()){
+            int roll;
+            int budget = currentRoom.getScene().getBudget();
+            System.out.println("You are rolling to get at or above " + budget);
+            
+            roll = rollDice(1);
+            System.out.println("You roll a " + roll);
+            
+            if(roll >= budget){
+                System.out.println("You did well in the shot!");
+                currentRoom.takeOffAShot();
+            } else {
+                System.out.println("You did not do well in the shot");
+            }
+            
+            currentRoom.printShotList();
+        } else {
+            System.out.println("Scene is wrapped, you cannot act");
+        }
+
+
     }
 
     public int getRank() {
         return rank;
     }
 
-    public void takeRole(Role newRole){
+    public void playerChoseCardRole(){
+        onCard = true;
+    }
 
+    public boolean getOnCard(){
+        return onCard;
+    }
+
+    public void setRole(Role newRole){
+
+        if(newRole.getRank() <= rank){
+            currentRole = newRole;
+            hasRole = true;
+
+        } else {
+            //System.out.println("Cannot take that role");
+        }
     }
 
     public void isTurn(){
@@ -69,6 +110,10 @@ public class Player {
         return currentRole;
     }
 
+    public String getRoleName(){
+        return currentRole.getName();
+    }
+
     public Room getRoom() {
         return currentRoom;
     }
@@ -83,7 +128,6 @@ public class Player {
 
     public void rehearse() {
         chips++;
-        return;
     }
 
     public void upgradeToRank(int newRank) {

@@ -106,7 +106,7 @@ public class ParseXML {
                             String partName = part.getAttributes().getNamedItem("name").getNodeValue();
                             String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
                             String line = part.getTextContent();
-                            eachRole.add(new Role(partName, Integer.parseInt(partLevel), line));
+                            eachRole.add(new Role(partName, Integer.parseInt(partLevel), line.substring(18, line.length() - 7)));
                             //System.out
                               //      .println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
 
