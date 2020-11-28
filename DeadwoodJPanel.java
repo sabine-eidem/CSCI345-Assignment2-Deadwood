@@ -36,7 +36,7 @@ class DeadwoodJPanel extends JFrame {
         background.setLayout(new BoxLayout(background, BoxLayout.Y_AXIS));
         background.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        background.setPreferredSize(new Dimension(1600, 1000));
+        background.setPreferredSize(new Dimension(1600, 1000));//sdfsdf
         background.setMinimumSize(new Dimension(1600, 1000));
 
 
