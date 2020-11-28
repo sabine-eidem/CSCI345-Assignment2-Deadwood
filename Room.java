@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Room {
@@ -12,10 +13,11 @@ public class Room {
     private List<Boolean> shotList;
     private List<Player> onCardPlayers;
     private List<Player> offCardPlayers;
+    private HashMap<String, Integer> areaInfo;
     private boolean visited;
     private boolean wrapped;
 
-    public Room(String newName, List<Boolean> shots, List<String> neighborNames, List<Role> roles) {
+    public Room(String newName, List<Boolean> shots, List<String> neighborNames, List<Role> roles, HashMap<String, Integer> area) {
         name = newName;
         shotList = shots;
         neighbors = neighborNames;
@@ -23,6 +25,8 @@ public class Room {
         wrapped = false;
         offCardPlayers = new ArrayList<>();
         onCardPlayers = new ArrayList<>();
+        areaInfo = area;
+
         //roomNeighbors = convertNeighborsToRoomClass();
     }
     

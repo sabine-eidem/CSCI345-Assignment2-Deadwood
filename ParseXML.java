@@ -43,7 +43,8 @@ public class ParseXML {
                 List<Boolean>shotList = new ArrayList<Boolean>();
                 String setName;
                 String currentTake = "-1";
-
+                
+                HashMap<String, Integer> setArea = new HashMap<String, Integer>();
             //System.out.println("Printing information for set " + (i + 1));
 
             // reads data from the nodes
@@ -77,11 +78,7 @@ public class ParseXML {
                         }
                         // System.out.println(currentNeighbor);
                     }
-                } else if ("area".equals(sub.getNodeName())) {
-                    String authorName = sub.getTextContent();
-                    //System.out.println("Area = " + authorName);
-
-                } else if ("takes".equals(sub.getNodeName())) {
+                }  else if ("takes".equals(sub.getNodeName())) {
                     //System.out.println("Takes:");
                     NodeList takes = sub.getChildNodes();
 
@@ -92,6 +89,23 @@ public class ParseXML {
                             currentTake = take.getAttributes().getNamedItem("number").getNodeValue();
                             //System.out.println("  *" + currentTake);
                             shotList.add(false);
+                            Node takesSub = children.item(k);
+                            if ("area".equals(takesSub.getNodeName())) {
+
+                                int x = Integer.parseInt(takesSub.getAttributes().getNamedItem("x").getNodeValue());
+                                int y = Integer.parseInt(takesSub.getAttributes().getNamedItem("y").getNodeValue());
+                                int h = Integer.parseInt(takesSub.getAttributes().getNamedItem("h").getNodeValue());
+                                int w = Integer.parseInt(takesSub.getAttributes().getNamedItem("w").getNodeValue());
+
+                                setArea.put("x", x);
+                                setArea.put("y", y);
+                                setArea.put("h", h);
+                                setArea.put("w", w);
+                               
+
+                            }
+
+                            System.out.println(setArea);
                         }
                         // System.out.println(currentNeighbor);
                     }
@@ -117,7 +131,7 @@ public class ParseXML {
 
             } // for childnodes
             
-            addingRooms.add(new Room(setName, shotList, neighborsList, eachRole));
+            addingRooms.add(new Room(setName, shotList, neighborsList, eachRole, setArea));
             //System.out.println("\n");
             
             

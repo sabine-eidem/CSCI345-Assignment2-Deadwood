@@ -1,9 +1,44 @@
+import java.io.IOException;
 import java.util.*;
 import org.w3c.dom.Document;
+import javax.swing.*;
 
 public class Deadwood {
 
-    public static void main(String args[]) {
+    private static void createAndShowGUI() {
+        // Create and set up the window.
+        JFrame frame = new JFrame("Deadwood");
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Add the ubiquitous "Hello World" label.
+        JLabel label = new JLabel("Hello World");
+        frame.getContentPane().add(label);
+
+        // Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void main(String args[]) throws IOException {
+
+
+
+
+
+
+
+        // javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        //     public void run() {
+        //         createAndShowGUI();
+        //     }
+        // });
+
+            new DeadwoodJPanel();
+
+
+
+
         // Make array of class Player called players of size how many players
         Board boardClass = new Board();
 
