@@ -19,7 +19,18 @@ class DeadwoodJPanel extends JFrame {
 
 
     public DeadwoodJPanel() throws IOException{
-        
+
+            //Popup
+            JPopupMenu popMenu = new JPopupMenu();
+
+
+
+
+
+
+
+
+
         ImageIcon image = new ImageIcon("pics/board.jpg");
 
 
@@ -36,18 +47,18 @@ class DeadwoodJPanel extends JFrame {
         this.setSize(1500, 940);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setVisible(true);
         //ImageIcon image = new ImageIcon("");
         //this.setIconImage(image.getImage());
-
+        
         this.getContentPane().setBackground(Color.DARK_GRAY);
-
-
-
-
-       
+        
+        
+        
+        
+        
         this.add(label);
-
+        
+        this.setVisible(true);
     }
 
     
