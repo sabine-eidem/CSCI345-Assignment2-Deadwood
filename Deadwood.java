@@ -11,25 +11,21 @@ public class Deadwood {
 
 
 
+        BoardLayersListener boardGUI = new BoardLayersListener();
+        boardGUI.setVisible(true);
+
+        // Take input from the user about number of players
+        int playerCount = Integer.parseInt(JOptionPane.showInputDialog(boardGUI, "How many players?"));
 
 
-
-
-        // javax.swing.SwingUtilities.invokeLater(new Runnable() {
-        //     public void run() {
-        //         createAndShowGUI();
-        //     }
-        // });
-
-         DeadwoodJPanel myFrame = new DeadwoodJPanel();
-
-
+        System.out.println(playerCount);
+        
 
 
         // Make array of class Player called players of size how many players
         Board boardClass = new Board();
 
-        int playerCount;
+        
         String newName;
 
         List<Room> rooms = new ArrayList<Room>();
@@ -79,6 +75,14 @@ public class Deadwood {
             }
 
 
+            //for all the rooms, place a card back on them
+            for(int i = 0;i < rooms.size(); i++){
+                System.out.println("Adding " + rooms.get(i).getName());
+                boardGUI.addCard(rooms.get(i).getArea(), i);
+            }
+
+
+
             //add trailer and office 
             rooms.addAll((boardParsing.readOfficeData(board)));
             rooms.addAll((boardParsing.readTrailerData(board)));
@@ -113,27 +117,11 @@ public class Deadwood {
         // 6 each player starts with 4 credits
         // 7-8 each player starts with rank 2
 
-        System.out.print("Welcome to Deadwood!\nHow many players? (2-6): ");
-        playerCount = in.nextInt();
-        newName = in.nextLine();
 
-        if (playerCount == 2 || playerCount == 3) {
-            days = 3;
-        } else if (playerCount == 4) {
-            // no change
-        } else if (playerCount == 5) {
-            credits = 2;
-        } else if (playerCount == 6) {
-            credits = 4;
-        } else if (playerCount <= 8) {
-            rank = 2;
-        } else {
-            System.out.println("goodluck");
-        }
 
         for (int i = 0; i < playerCount; i++) {
-            System.out.print("Player " + (i + 1) + " what's your name: ");
-            newName = in.nextLine();
+            
+            newName = JOptionPane.showInputDialog(boardGUI, "Player " + (i+1) + " name");
             players.add(new Player(newName, credits, rank));
         }
 

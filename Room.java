@@ -150,6 +150,10 @@ public class Room {
         offCardPlayers.add(player);
     }
 
+    public HashMap<String, Integer> getArea(){
+        return areaInfo;
+    }
+
     public void wrappedPayout(){
 
         try{

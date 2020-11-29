@@ -91,21 +91,21 @@ public class ParseXML {
                             shotList.add(false);
                             Node takesSub = children.item(k);
                             if ("area".equals(takesSub.getNodeName())) {
-
-                                int x = Integer.parseInt(takesSub.getAttributes().getNamedItem("x").getNodeValue());
-                                int y = Integer.parseInt(takesSub.getAttributes().getNamedItem("y").getNodeValue());
-                                int h = Integer.parseInt(takesSub.getAttributes().getNamedItem("h").getNodeValue());
-                                int w = Integer.parseInt(takesSub.getAttributes().getNamedItem("w").getNodeValue());
-
-                                setArea.put("x", x);
-                                setArea.put("y", y);
-                                setArea.put("h", h);
-                                setArea.put("w", w);
-                               
-
+                                // int x = Integer.parseInt(takesSub.getAttributes().getNamedItem("x").getNodeValue());
+                                // int y = Integer.parseInt(takesSub.getAttributes().getNamedItem("y").getNodeValue());
+                                // int h = Integer.parseInt(takesSub.getAttributes().getNamedItem("h").getNodeValue());
+                                // int w = Integer.parseInt(takesSub.getAttributes().getNamedItem("w").getNodeValue());
+                                
+                                // setArea.put("x", x);
+                                // setArea.put("y", y);
+                                // setArea.put("h", h);
+                                // setArea.put("w", w);
+                                
+                                
+                                // System.out.println(setName);
+                                // System.out.println(setArea);
                             }
-
-                            System.out.println(setArea);
+                            
                         }
                         // System.out.println(currentNeighbor);
                     }
@@ -127,6 +127,20 @@ public class ParseXML {
                         }
                         // System.out.println(currentNeighbor);
                     }
+                } else if("area".equals(sub.getNodeName())){
+                    
+                    int x = Integer.parseInt(sub.getAttributes().getNamedItem("x").getNodeValue());
+                    int y = Integer.parseInt(sub.getAttributes().getNamedItem("y").getNodeValue());
+                    int h = Integer.parseInt(sub.getAttributes().getNamedItem("h").getNodeValue());
+                    int w = Integer.parseInt(sub.getAttributes().getNamedItem("w").getNodeValue());
+
+                    setArea.put("x", x);
+                    setArea.put("y", y);
+                    setArea.put("h", h);
+                    setArea.put("w", w);
+
+                    System.out.println(setName);
+                    System.out.println(setArea);
                 }
 
             } // for childnodes
