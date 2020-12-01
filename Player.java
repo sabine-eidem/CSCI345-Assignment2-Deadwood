@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.List;
 public class Player {
     private String name;
     private String diceName;
@@ -6,12 +7,16 @@ public class Player {
     private boolean hasRole;
     private boolean hasTurn;
     private boolean onCard;
+    private boolean hasPickedRoom;
     private boolean hasMoved;
     private Role currentRole;
     private Room currentRoom;
+    private int roomChoise;
+    private List<Room> rooms;
 
 
-    public Player (String Name, int creds, int Rank, String DiceName){
+
+    public Player (String Name, int creds, int Rank, String DiceName, List<Room> Rooms){
         name = Name;
         dollars = 0;
         credits = creds;
@@ -21,6 +26,8 @@ public class Player {
         hasMoved = false;
         onCard = false;
         diceName = DiceName;
+        hasPickedRoom = false;
+        rooms = Rooms;
     }
 
     public String getName() {
@@ -90,6 +97,7 @@ public class Player {
     public void endTurn(){
         hasTurn = false;
         hasMoved = false;
+        hasPickedRoom = false;
     }
 
     public boolean getTurnStatus(){
@@ -177,4 +185,26 @@ public class Player {
         return diceName;
     }
 
+    public void setRoomChoise(int index){
+        roomChoise = index;
+        System.out.println("Room changed");
+        String newLocation = print1Neighbor(index);
+        System.out.println("You have chosen: " + newLocation);
+        for (int k = 0; k < rooms.size(); k++) {
+            if (rooms.get(k).getName().equals(newLocation)) {
+                Room newRoom = rooms.get(k);
+                currentRoom = newRoom;
+                finishedMove();
+            }
+        }
+        hasPickedRoom = true;
+    }
+
+    public int getRoomChoise(){
+        return roomChoise;
+    }
+
+    public boolean getHasPickedRoom(){
+        return hasPickedRoom;
+    }
 }

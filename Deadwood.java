@@ -118,14 +118,15 @@ public class Deadwood {
         for (int i = 0; i < playerCount; i++) {
             String diceName = colors[i] + rank + ".png";
             newName = JOptionPane.showInputDialog(boardGUI, "Player " + (i+1) + " name");
-            players.add(new Player(newName, credits, rank, diceName));
+            players.add(new Player(newName, credits, rank, diceName, rooms));
         }
         boardGUI.initiatePlayers(players);
 
 
-        boardGUI.printRoleLocations(rooms);
 
-        boardGUI.printTakesLocations(rooms);
+        //Test Prints all the board label positions 
+        // boardGUI.printRoleLocations(rooms);
+        // boardGUI.printTakesLocations(rooms);
 
 
         //Put players in the room equal to trailer 
@@ -187,6 +188,7 @@ public class Deadwood {
                             players.get(j).rehearse();
                         } else {
                             System.out.println("Player does not have role");
+                            
                         }
 
                     } else if (input == 3) { // Take Role

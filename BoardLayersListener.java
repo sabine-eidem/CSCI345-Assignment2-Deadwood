@@ -9,6 +9,9 @@
 
 import java.awt.*;
 import javax.swing.*;
+
+
+
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.util.*;
@@ -29,6 +32,9 @@ public class BoardLayersListener extends JFrame {
    JButton bAct;
    JButton bRehearse;
    JButton bMove;
+   JButton bTakeRole;
+   JButton bUpgrade;
+   JButton bEnd;
 
    // JLayered Pane
    JLayeredPane bPane;
@@ -36,6 +42,11 @@ public class BoardLayersListener extends JFrame {
    Player curPlayer;
    private List<Room> rooms;
 
+   // For roomSelect Combo box method
+   static final String Select = "Sports";
+   String input = "";
+
+   private int roomNum;
 
    // Constructor
 
@@ -97,10 +108,28 @@ public class BoardLayersListener extends JFrame {
       bMove.setBounds(icon.getIconWidth() + 10, 90, 100, 20);
       bMove.addMouseListener(new boardMouseListener());
 
+      bTakeRole = new JButton("Take Role");
+      bTakeRole.setBackground(Color.white);
+      bTakeRole.setBounds(icon.getIconWidth() + 10, 120, 100, 20);
+      bTakeRole.addMouseListener(new boardMouseListener());
+
+      bUpgrade = new JButton("Upgrade");
+      bUpgrade.setBackground(Color.white);
+      bUpgrade.setBounds(icon.getIconWidth() + 10, 150, 100, 20);
+      bUpgrade.addMouseListener(new boardMouseListener());
+
+      bEnd = new JButton("End");
+      bEnd.setBackground(Color.white);
+      bEnd.setBounds(icon.getIconWidth() + 10, 180, 100, 20);
+      bEnd.addMouseListener(new boardMouseListener());
+
       // Place the action buttons in the top layer
       bPane.add(bAct, new Integer(2));
       bPane.add(bRehearse, new Integer(2));
       bPane.add(bMove, new Integer(2));
+      bPane.add(bTakeRole, new Integer(2));
+      bPane.add(bUpgrade, new Integer(2));
+      bPane.add(bEnd, new Integer(2));
 
    }
 
@@ -125,7 +154,6 @@ public class BoardLayersListener extends JFrame {
          // get pic
          ImageIcon pIcon = new ImageIcon("pics/dice/" + players.get(i).getDiceName());
          // ImageIcon pIcon = new ImageIcon("pics/dice/b1.png");
-
 
          // set bounds
          int x, y;
@@ -152,9 +180,8 @@ public class BoardLayersListener extends JFrame {
 
    }
 
-
-   public void printRoleLocations(List<Room> rooms){
-      for(int i = 0; i < 10; i++){
+   public void printRoleLocations(List<Room> rooms) {
+      for (int i = 0; i < 10; i++) {
          List<Role> offCardRoles = rooms.get(i).getOffCardRoles();
 
          for (int j = 0; j < offCardRoles.size(); j++) {
@@ -165,18 +192,17 @@ public class BoardLayersListener extends JFrame {
             HashMap<String, Integer> areaHashMap = offCardRoles.get(j).getAreaHashMap();
 
             JPanel redPanel = new JPanel();
-            
+
             redPanel.setBackground(Color.red);
             redPanel.setBounds(areaHashMap.get("x"), areaHashMap.get("y"), areaHashMap.get("w"), areaHashMap.get("h"));
             // redPanel.setBounds(500, 100, 50, 50);
             redPanel.setOpaque(true);
             bPane.add(redPanel, new Integer(1));
-         }         
+         }
       }
    }
 
-
-   public void printTakesLocations(List<Room> rooms){
+   public void printTakesLocations(List<Room> rooms) {
       for (int i = 0; i < 10; i++) {
 
          List<HashMap<String, Integer>> takesAreaHashList = rooms.get(i).getTakesAreaHashList();
@@ -186,15 +212,13 @@ public class BoardLayersListener extends JFrame {
             // cardLabels[i].setBounds(area.get("x"), area.get("y"), cIcon.getIconWidth() +
             // 2, cIcon.getIconHeight());
 
-
-
             HashMap<String, Integer> takesAreaHashMap = takesAreaHashList.get(j);
 
             ImageIcon boardIcon = new ImageIcon("pics/shot.png");
             JLabel shotLable = new JLabel();
             shotLable.setIcon(boardIcon);
-            shotLable.setBounds(takesAreaHashMap.get("x"), takesAreaHashMap.get("y"), 
-                              takesAreaHashMap.get("w"), takesAreaHashMap.get("h"));
+            shotLable.setBounds(takesAreaHashMap.get("x"), takesAreaHashMap.get("y"), takesAreaHashMap.get("w"),
+                  takesAreaHashMap.get("h"));
             // redPanel.setBounds(500, 100, 50, 50);
             shotLable.setOpaque(true);
             bPane.add(shotLable, new Integer(1));
@@ -206,7 +230,7 @@ public class BoardLayersListener extends JFrame {
       curPlayer = CurPlayer;
    }
 
-   public void updateRooms(List<Room> Rooms){
+   public void updateRooms(List<Room> Rooms) {
       rooms = Rooms;
    }
    // This class implements Mouse Events
@@ -223,6 +247,8 @@ public class BoardLayersListener extends JFrame {
 
             } else {
                System.out.println("Player does not have role");
+               JOptionPane.showMessageDialog(null, "You do not have a role", curPlayer.getName(),
+                     JOptionPane.ERROR_MESSAGE);
             }
          } else if (e.getSource() == bRehearse) {
             System.out.println("Rehearse is Selected\n");
@@ -231,40 +257,119 @@ public class BoardLayersListener extends JFrame {
                curPlayer.rehearse();
             } else {
                System.out.println("Player does not have role");
+               JOptionPane.showMessageDialog(null, "You do not have a role", curPlayer.getName(),
+                     JOptionPane.ERROR_MESSAGE);
             }
          } else if (e.getSource() == bMove) {
 
             if (curPlayer.hasRole()) {
-               System.out.println("Player does not have role and cannot cove");
+               System.out.println("Player has a role and cannot move");
+               JOptionPane.showMessageDialog(null, "Player has a role and cannot move", curPlayer.getName(),
+                     JOptionPane.ERROR_MESSAGE);
 
             } else if (curPlayer.hasMoved()) {
                System.out.println("Player has already moved this turn");
+               JOptionPane.showMessageDialog(null, "Player has already moved this turn", curPlayer.getName(),
+                     JOptionPane.ERROR_MESSAGE);
             } else {
+
+               roomNum = 1;
+
+               String[] comboArray = (curPlayer.getRoom().getNeighbors())
+                     .toArray(new String[curPlayer.getRoom().getNeighbors().size()]);
+
+               // Try 1
+               // // gridlayout
+               // // JFrame grid = new JFrame();
+               // // grid.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+               // // grid.setSize(500, 500);
+               // // grid.setLayout(new GridLayout(4, 1, 10, 10));
+
+               // // grid.add(new JButton("1"));
+               // // grid.add(new JButton("2"));
+               // // grid.add(new JButton("3"));
+               // // grid.add(new JButton("4"));
+
+               // // grid.setVisible(true);
+
+               // JPanel panel = new JPanel(new GridBagLayout());
+
+               // Try 2
+               // JPanel panel = new JPanel();
+
+               // JComboBox comboBox = new JComboBox(comboArray);
+
+               // JOptionPane.showConfirmDialog(null, comboBox, "Fav Sports",
+               // JOptionPane.NO_OPTION);
+               // panel.add(comboBox);
+
+               // System.out.println(roomNum);
+
+               // Try 3
+               // roomNum = roomSelect(comboArray);
+
+               // Try 4
+
+               // bPane.add(comboBox);
                System.out.println("Where would you like to move?");
                curPlayer.printNeighbors();
-               while (!curPlayer.hasMoved()) {
-                  curPlayer.showRoles();
-                  System.out.print("Please pick a number: ");
-                  //try {
-                     int roomNum = 1;
-                     
-                     String newLocation = curPlayer.print1Neighbor(roomNum);
-                     System.out.println("You have chosen: " + newLocation);
-                     for (int k = 0; k < rooms.size(); k++) {
-                        if (rooms.get(k).getName().equals(newLocation)) {
-                           Room newRoom = rooms.get(k);
-                           curPlayer.setRoom(newRoom);
-                           curPlayer.finishedMove();
-                        }
-                     }
-                  // } catch (Exception e) {
-                  //    System.out.println("Invalid input, please select again");
-                  // }
-               }
+               ComboBoxClass gennus = new ComboBoxClass(comboArray, curPlayer);
+
+               roomNum = curPlayer.getRoomChoise();
+               System.out.println(roomNum);
+               System.out.println(roomNum);
+               System.out.println(roomNum);
+
+               // while(!curPlayer.getHasPickedRoom()){
+
+               // while (!curPlayer.hasMoved()) {
+               // curPlayer.showRoles();
+
+               // // try {
+
+               // // } catch (Exception e) {
+               // // System.out.println("Invalid input, please select again");
+               // // }
+               // }
+               // }
             }
             System.out.println("Move is Selected\n");
          }
       }
+
+      // public int roomSelect(String[] neighbors) {
+      // int room = -1;
+
+      // String[] comboArray = (curPlayer.getRoom().getNeighbors())
+      // .toArray(new String[curPlayer.getRoom().getNeighbors().size()]);
+      // ActionListener lst = new ActionListener() {
+      // public void actionPerformed(ActionEvent e) {
+      // // String[] sport = new String[] { "Cricket", "FootBall", "Tennis", "Hockey"
+      // };
+      // input = (String) JOptionPane.showInputDialog(BoardLayersListener.this,
+      // "Please select your favorite sport", Select, JOptionPane.INFORMATION_MESSAGE,
+      // null, neighbors,
+      // "Tennis");
+      // JOptionPane.showMessageDialog(null, "You have selected: " + input);
+      // }
+      // };
+      // System.out.println(input);
+      // bRehearse.addActionListener(lst);
+      // // button.setBounds(1300, 450, 100, 100);
+      // add(bRehearse);
+      // pack();
+      // setVisible(true);
+
+      // if (Arrays.asList(neighbors).contains(input)) {
+      // room = Arrays.asList(neighbors).indexOf(input);
+      // }
+      // while (room == -1) {
+
+      // }
+
+      // return room;
+
+      // }
 
       public void mousePressed(MouseEvent e) {
       }

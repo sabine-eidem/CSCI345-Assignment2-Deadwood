@@ -171,6 +171,10 @@ public class Room {
         return takesAreaHashList;
     }
 
+    public List<String> getNeighbors(){
+        return neighbors;
+    }
+
     public void wrappedPayout(){
 
         try{

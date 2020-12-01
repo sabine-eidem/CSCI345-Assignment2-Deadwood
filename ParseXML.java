@@ -94,15 +94,6 @@ public class ParseXML {
                             //System.out.println("  *" + currentTake);
                             shotList.add(false);
                             
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
                             NodeList areaNodeList = take.getChildNodes();
 
                             for (int l = 0; l < areaNodeList.getLength(); l++) {
@@ -127,36 +118,6 @@ public class ParseXML {
                                     takesAreaHashList.add(takesHashMap);
                                 }
                             }
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            // Node takesSub = children.item(k);
-                            // if ("area".equals(takesSub.getNodeName())) {
-
-                            //     HashMap<String, Integer> takesAreaHashMap = new HashMap<String, Integer>();
-
-                            //     int x = Integer.parseInt(takesSub.getAttributes().getNamedItem("x").getNodeValue());
-                            //     int y = Integer.parseInt(takesSub.getAttributes().getNamedItem("y").getNodeValue());
-                            //     int h = Integer.parseInt(takesSub.getAttributes().getNamedItem("h").getNodeValue());
-                            //     int w = Integer.parseInt(takesSub.getAttributes().getNamedItem("w").getNodeValue());
-                                
-                            //     takesAreaHashMap.put("x", x);
-                            //     takesAreaHashMap.put("y", y);
-                            //     takesAreaHashMap.put("h", h);
-                            //     takesAreaHashMap.put("w", w);
-
-                            //     System.out.println(takesAreaHashMap);
-                                
-                            //     takesAreaHashList.add(takesAreaHashMap);
-                            // }
                             
                         }
                         // System.out.println(currentNeighbor);

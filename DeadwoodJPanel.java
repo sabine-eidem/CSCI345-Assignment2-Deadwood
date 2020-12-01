@@ -30,7 +30,7 @@ JButton button;
         JFrame grid = new JFrame();
         grid.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         grid.setSize(500, 500);
-        grid.setLayout(new GridLayout(3, 4, 10, 10));
+        grid.setLayout(new GridLayout(1, 4, 10, 10));
 
         grid.add(new JButton("1"));
         grid.add(new JButton("2"));
