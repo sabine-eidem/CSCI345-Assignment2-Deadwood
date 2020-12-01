@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.*;
 
 public class Scene {
 
@@ -9,8 +9,9 @@ public class Scene {
   private boolean isActive;
   private boolean isAssigned;
   private List<Role> roles;
+  private List<HashMap<String, Integer>> partAreaList;
 
-  public Scene(String newName, int budg, List<Role> sceneRoles, int num, String desc) {
+  public Scene(String newName, int budg, List<Role> sceneRoles, int num, String desc, List<HashMap<String, Integer>> PartAreaList){
     name = newName;
     budget = budg;
     roles = sceneRoles;
@@ -18,6 +19,7 @@ public class Scene {
     description = desc;
     isActive = true;
     isAssigned = false;
+    partAreaList = PartAreaList;
   }
 
   public int getBudget() {
@@ -89,6 +91,11 @@ public class Scene {
       System.out.print("\t" + (i + 1 + offCardRoleCount) + ") ");
       roles.get(i).printRoleInfo();
     }
+  }
+
+
+  List<HashMap<String, Integer>> getPartAreaList(){
+    return partAreaList;
   }
 
 }

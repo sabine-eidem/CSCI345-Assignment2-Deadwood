@@ -16,11 +16,7 @@ public class Deadwood {
 
         // Take input from the user about number of players
         int playerCount = Integer.parseInt(JOptionPane.showInputDialog(boardGUI, "How many players?"));
-
-
-        System.out.println(playerCount);
         
-
 
         // Make array of class Player called players of size how many players
         Board boardClass = new Board();
@@ -77,7 +73,6 @@ public class Deadwood {
 
             //for all the rooms, place a card back on them
             for(int i = 0;i < rooms.size(); i++){
-                System.out.println("Adding " + rooms.get(i).getName());
                 boardGUI.addCard(rooms.get(i).getArea(), i);
             }
 
@@ -116,16 +111,24 @@ public class Deadwood {
         // 5 each player starts with 2 credits
         // 6 each player starts with 4 credits
         // 7-8 each player starts with rank 2
-
+                            // "b", "c", "g", "o", "p", "r", "v", "w", "y"
+            String[] colors = {"r", "o", "y", "g", "c", "b", "p", "v", "w"};
 
 
         for (int i = 0; i < playerCount; i++) {
-            
+            String diceName = colors[i] + rank + ".png";
             newName = JOptionPane.showInputDialog(boardGUI, "Player " + (i+1) + " name");
-            players.add(new Player(newName, credits, rank));
+            players.add(new Player(newName, credits, rank, diceName));
         }
+        boardGUI.initiatePlayers(players);
 
 
+        boardGUI.printRoleLocations(rooms);
+
+        boardGUI.printTakesLocations(rooms);
+
+
+        //Put players in the room equal to trailer 
         for(int i = 0; i < rooms.size(); i++){
             if(rooms.get(i).getName().equals("trailer")){
                 for(int j = 0; j < players.size(); j++){
@@ -134,12 +137,12 @@ public class Deadwood {
             }
         }
 
-        System.out.println("Players:");
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).printName();
-        }
+
 
         int input;
+
+
+            boardGUI.updateRooms(rooms);
 
         for (int i = 0; i < days; i++) {
             for (int j = 0; j < players.size(); j++) {
@@ -150,6 +153,8 @@ public class Deadwood {
                     System.out.println("You are have role " + players.get(j).getRoleName());
                 }
                 players.get(i).isTurn();
+
+                boardGUI.updatePlayer(players.get(i));
 
                 while (players.get(i).getTurnStatus()) {
 
@@ -285,3 +290,6 @@ public class Deadwood {
     }
 
 }
+
+
+

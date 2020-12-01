@@ -43,7 +43,11 @@ public class ParseXML {
                 List<Boolean>shotList = new ArrayList<Boolean>();
                 String setName;
                 String currentTake = "-1";
-                
+
+
+                List<HashMap<String, Integer>> partAreaList = new ArrayList<HashMap<String, Integer>>();
+
+                List<HashMap<String, Integer>> takesAreaHashList = new ArrayList<HashMap<String, Integer>>();
                 HashMap<String, Integer> setArea = new HashMap<String, Integer>();
             //System.out.println("Printing information for set " + (i + 1));
 
@@ -89,22 +93,70 @@ public class ParseXML {
                             currentTake = take.getAttributes().getNamedItem("number").getNodeValue();
                             //System.out.println("  *" + currentTake);
                             shotList.add(false);
-                            Node takesSub = children.item(k);
-                            if ("area".equals(takesSub.getNodeName())) {
-                                // int x = Integer.parseInt(takesSub.getAttributes().getNamedItem("x").getNodeValue());
-                                // int y = Integer.parseInt(takesSub.getAttributes().getNamedItem("y").getNodeValue());
-                                // int h = Integer.parseInt(takesSub.getAttributes().getNamedItem("h").getNodeValue());
-                                // int w = Integer.parseInt(takesSub.getAttributes().getNamedItem("w").getNodeValue());
-                                
-                                // setArea.put("x", x);
-                                // setArea.put("y", y);
-                                // setArea.put("h", h);
-                                // setArea.put("w", w);
-                                
-                                
-                                // System.out.println(setName);
-                                // System.out.println(setArea);
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            NodeList areaNodeList = take.getChildNodes();
+
+                            for (int l = 0; l < areaNodeList.getLength(); l++) {
+                                Node areaPartNode = areaNodeList.item(l);
+                                if ("area".equals(areaPartNode.getNodeName())) {
+
+                                    HashMap<String, Integer> takesHashMap = new HashMap<String, Integer>();
+
+                                    int x = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("x").getNodeValue());
+                                    int y = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("y").getNodeValue());
+                                    int h = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("h").getNodeValue());
+                                    int w = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("w").getNodeValue());
+
+                                    takesHashMap.put("x", x);
+                                    takesHashMap.put("y", y);
+                                    takesHashMap.put("h", h);
+                                    takesHashMap.put("w", w);
+
+                                    // System.out.println(partName);
+                                    // System.out.println(localPartArea);
+                                    System.out.println(takesHashMap);
+                                    takesAreaHashList.add(takesHashMap);
+                                }
                             }
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            // Node takesSub = children.item(k);
+                            // if ("area".equals(takesSub.getNodeName())) {
+
+                            //     HashMap<String, Integer> takesAreaHashMap = new HashMap<String, Integer>();
+
+                            //     int x = Integer.parseInt(takesSub.getAttributes().getNamedItem("x").getNodeValue());
+                            //     int y = Integer.parseInt(takesSub.getAttributes().getNamedItem("y").getNodeValue());
+                            //     int h = Integer.parseInt(takesSub.getAttributes().getNamedItem("h").getNodeValue());
+                            //     int w = Integer.parseInt(takesSub.getAttributes().getNamedItem("w").getNodeValue());
+                                
+                            //     takesAreaHashMap.put("x", x);
+                            //     takesAreaHashMap.put("y", y);
+                            //     takesAreaHashMap.put("h", h);
+                            //     takesAreaHashMap.put("w", w);
+
+                            //     System.out.println(takesAreaHashMap);
+                                
+                            //     takesAreaHashList.add(takesAreaHashMap);
+                            // }
                             
                         }
                         // System.out.println(currentNeighbor);
@@ -115,15 +167,39 @@ public class ParseXML {
 
                     for (int k = 0; k < parts.getLength(); k++) {
                         Node part = parts.item(k);
-
+                        HashMap<String, Integer> localPartArea = new HashMap<String, Integer>();
                         if ("part".equals(part.getNodeName())) {
                             String partName = part.getAttributes().getNamedItem("name").getNodeValue();
                             String partLevel = part.getAttributes().getNamedItem("level").getNodeValue();
                             String line = part.getTextContent();
-                            eachRole.add(new Role(partName, Integer.parseInt(partLevel), line.substring(18, line.length() - 7)));
-                            //System.out
-                              //      .println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
 
+                            //System.out
+                            //      .println("  *" + partName + "\n  *Level: " + partLevel + " \n   \'" + line + "\'");
+                            
+                            NodeList areaNodeList = part.getChildNodes();
+                            
+                            
+                            for(int l = 0; l < areaNodeList.getLength(); l++){
+                                Node areaPartNode = areaNodeList.item(l);
+                                if ("area".equals(areaPartNode.getNodeName())) {
+                                    
+                                    int x = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("x").getNodeValue());
+                                    int y = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("y").getNodeValue());
+                                    int h = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("h").getNodeValue());
+                                    int w = Integer.parseInt(areaPartNode.getAttributes().getNamedItem("w").getNodeValue());
+                                    
+                                    localPartArea.put("x", x);
+                                    localPartArea.put("y", y);
+                                    localPartArea.put("h", h);
+                                    localPartArea.put("w", w);
+
+                                    //System.out.println(partName);
+                                    // System.out.println(localPartArea);
+                                    partAreaList.add(localPartArea);
+                                }
+                            }
+                            
+                            eachRole.add(new Role(partName, Integer.parseInt(partLevel), line.substring(18, line.length() - 7), localPartArea));
                         }
                         // System.out.println(currentNeighbor);
                     }
@@ -139,13 +215,13 @@ public class ParseXML {
                     setArea.put("h", h);
                     setArea.put("w", w);
 
-                    System.out.println(setName);
-                    System.out.println(setArea);
+                    // System.out.println(setName);
+                    // System.out.println(setArea);
                 }
 
             } // for childnodes
             
-            addingRooms.add(new Room(setName, shotList, neighborsList, eachRole, setArea));
+            addingRooms.add(new Room(setName, shotList, neighborsList, eachRole, setArea, partAreaList, takesAreaHashList));
             //System.out.println("\n");
             
             
@@ -324,6 +400,7 @@ public class ParseXML {
     public List<Scene> readCardData(Document d) {
 
         List<Scene> addingScenes  = new ArrayList<Scene>();
+        List<HashMap<String, Integer>> partAreaList =new ArrayList<HashMap<String, Integer>>();
 
         Element root = d.getDocumentElement();
 
@@ -337,6 +414,7 @@ public class ParseXML {
             String budget;
             String sceneName;
             String desc = "-1";
+            String line = "-1";
             
             List<Role> eachRole = new ArrayList<>();
             Node card = cards.item(i);
@@ -357,7 +435,7 @@ public class ParseXML {
             for (int j = 0; j < children.getLength(); j++) {
                 Node sub = children.item(j);
 
-                String line, partLevel, partName;
+                String partLevel, partName;
 
                 if ("scene".equals(sub.getNodeName())) {
                     number = sub.getAttributes().getNamedItem("number").getNodeValue();
@@ -380,22 +458,32 @@ public class ParseXML {
 
                     for (int k = 0; k < parts.getLength(); k++) {
                         Node part = parts.item(k);
+                        HashMap<String, Integer> partArea = new HashMap<String, Integer>();                 
 
                         if ("line".equals(part.getNodeName())) {
                             //System.out.println("Part" + ": " + partName + "\n ->level " + partLevel);
                             line = part.getTextContent();
                             //System.out.println(" ->line \"" + line + "\"");
-                            eachRole.add(new Role(partName, Integer.parseInt(partLevel), line));    
                         } else if ("area".equals(part.getNodeName())) {
-                            String x, y, h, w;
-                            x = part.getAttributes().getNamedItem("x").getNodeValue();
-                            h = part.getAttributes().getNamedItem("h").getNodeValue();
-                            w = part.getAttributes().getNamedItem("w").getNodeValue();
-                            y = part.getAttributes().getNamedItem("y").getNodeValue();
-
+                            
+                            Integer x = Integer.parseInt(part.getAttributes().getNamedItem("x").getNodeValue());
+                            Integer h = Integer.parseInt(part.getAttributes().getNamedItem("h").getNodeValue());
+                            Integer w = Integer.parseInt(part.getAttributes().getNamedItem("w").getNodeValue());
+                            Integer y = Integer.parseInt(part.getAttributes().getNamedItem("y").getNodeValue());
+                            
+                            
+                            partArea.put("x", x);
+                            partArea.put("h", h);
+                            partArea.put("w", w);
+                            partArea.put("y", y);
+                            
+                            
+                            partAreaList.add(partArea);
+                            
                             //System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
                         }
-
+                        
+                        eachRole.add(new Role(partName, Integer.parseInt(partLevel), line, partArea));    
                     }
                     //System.out.println("\n");
                 }
@@ -404,7 +492,7 @@ public class ParseXML {
                 // THis is were all the data for scene is added
                 
             } // end parsing card children
-            addingScenes.add(new Scene(sceneName, Integer.parseInt(budget), eachRole, Integer.parseInt(number), desc));
+            addingScenes.add(new Scene(sceneName, Integer.parseInt(budget), eachRole, Integer.parseInt(number), desc, partAreaList));
             //System.out.println();
         } // end parsing cards
         //System.out.println("\n");

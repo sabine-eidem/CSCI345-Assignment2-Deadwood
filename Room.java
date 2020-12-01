@@ -14,10 +14,14 @@ public class Room {
     private List<Player> onCardPlayers;
     private List<Player> offCardPlayers;
     private HashMap<String, Integer> areaInfo;
+    private List<HashMap<String, Integer>> nativePartsList;
+    private List<HashMap<String, Integer>> takesAreaHashList;
     private boolean visited;
     private boolean wrapped;
 
-    public Room(String newName, List<Boolean> shots, List<String> neighborNames, List<Role> roles, HashMap<String, Integer> area) {
+    public Room(String newName, List<Boolean> shots, List<String> neighborNames, List<Role> roles,
+                HashMap<String, Integer> area, List<HashMap<String, Integer>> NativePartsList, 
+                List<HashMap<String, Integer>> TakesAreaHashList) {
         name = newName;
         shotList = shots;
         neighbors = neighborNames;
@@ -26,6 +30,8 @@ public class Room {
         offCardPlayers = new ArrayList<>();
         onCardPlayers = new ArrayList<>();
         areaInfo = area;
+        nativePartsList = NativePartsList;
+        takesAreaHashList = TakesAreaHashList;
 
         //roomNeighbors = convertNeighborsToRoomClass();
     }
@@ -152,6 +158,17 @@ public class Room {
 
     public HashMap<String, Integer> getArea(){
         return areaInfo;
+    }
+
+    public List<Role> getOffCardRoles(){
+        return offCardRoles;
+    }
+    public List<HashMap<String, Integer>> getNativePartsData(){
+        return nativePartsList;
+    }
+
+    public List<HashMap<String, Integer>> getTakesAreaHashList(){
+        return takesAreaHashList;
     }
 
     public void wrappedPayout(){

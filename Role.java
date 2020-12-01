@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Role {
 
     private String name;
@@ -6,11 +8,14 @@ public class Role {
     private boolean taken;
     private boolean onScene;
 
-    public Role(String newName, int rank, String newLine) {
+    private HashMap<String, Integer> areaHashMap;
+
+    public Role(String newName, int rank, String newLine, HashMap<String, Integer> AreaHashMap) {
         name = newName;
         reqRank = rank;
         line = newLine;
         taken = false;
+        areaHashMap = AreaHashMap;
     }
 
     public String getName() {
@@ -41,6 +46,10 @@ public class Role {
     public void leave() {
         taken = false;
         return;
+    }
+
+    public HashMap<String, Integer> getAreaHashMap(){
+        return areaHashMap;
     }
 
     public void printRoleInfo() {

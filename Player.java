@@ -1,6 +1,7 @@
 import java.io.*;
 public class Player {
     private String name;
+    private String diceName;
     private int dollars, credits, rank, chips;
     private boolean hasRole;
     private boolean hasTurn;
@@ -10,7 +11,7 @@ public class Player {
     private Room currentRoom;
 
 
-    public Player (String Name, int creds, int Rank){
+    public Player (String Name, int creds, int Rank, String DiceName){
         name = Name;
         dollars = 0;
         credits = creds;
@@ -19,6 +20,7 @@ public class Player {
         chips = 0;
         hasMoved = false;
         onCard = false;
+        diceName = DiceName;
     }
 
     public String getName() {
@@ -169,6 +171,10 @@ public class Player {
 
     public void showRoles(){
 
+    }
+
+    public String getDiceName(){
+        return diceName;
     }
 
 }
