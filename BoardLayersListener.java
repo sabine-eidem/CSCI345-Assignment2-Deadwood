@@ -10,8 +10,6 @@
 import java.awt.*;
 import javax.swing.*;
 
-
-
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.util.*;
@@ -156,18 +154,27 @@ public class BoardLayersListener extends JFrame {
          // ImageIcon pIcon = new ImageIcon("pics/dice/b1.png");
 
          // set bounds
-         int x, y;
+         
+         
+         
+         HashMap<String, Integer> pos = new HashMap<>();
 
+
+         
+         int x, y;
+         
          int minX = 1000;
          int maxX = 1150;
-
+         
          int minY = 300;
          int maxY = 400;
-
+         
          Random random = new Random();
          x = random.nextInt(maxX + 1 - minX) + minX;
          y = random.nextInt(maxY + 1 - minY) + minY;
-
+         
+         pos.put("x", x);
+         pos.put("y", y);
          // add
          playerLabels[i].setIcon(pIcon);
          playerLabels[i].setBounds(x, y, pIcon.getIconWidth() + 2, pIcon.getIconHeight());
@@ -175,9 +182,20 @@ public class BoardLayersListener extends JFrame {
          bPane.add(playerLabels[i], new Integer(1));
          bPane.repaint();
 
+         players.get(i).setPlayerPos(pos);
+
          System.out.println("Player " + players.get(i).getName() + " added");
       }
 
+   }
+
+   public void printPlayers() {
+
+   }
+
+   public void endGame() {
+      JOptionPane.showMessageDialog(null, "Game has ended", "Comgrats " + curPlayer.getName(),
+            JOptionPane.INFORMATION_MESSAGE);
    }
 
    public void printRoleLocations(List<Room> rooms) {
@@ -227,7 +245,9 @@ public class BoardLayersListener extends JFrame {
    }
 
    public void updatePlayer(Player CurPlayer) {
+
       curPlayer = CurPlayer;
+      curPlayer.resetTurnStatus();
    }
 
    public void updateRooms(List<Room> Rooms) {
@@ -251,8 +271,6 @@ public class BoardLayersListener extends JFrame {
                      JOptionPane.ERROR_MESSAGE);
             }
          } else if (e.getSource() == bRehearse) {
-            System.out.println("Rehearse is Selected\n");
-
             if (curPlayer.hasRole()) {
                curPlayer.rehearse();
             } else {
@@ -278,98 +296,41 @@ public class BoardLayersListener extends JFrame {
                String[] comboArray = (curPlayer.getRoom().getNeighbors())
                      .toArray(new String[curPlayer.getRoom().getNeighbors().size()]);
 
-               // Try 1
-               // // gridlayout
-               // // JFrame grid = new JFrame();
-               // // grid.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-               // // grid.setSize(500, 500);
-               // // grid.setLayout(new GridLayout(4, 1, 10, 10));
-
-               // // grid.add(new JButton("1"));
-               // // grid.add(new JButton("2"));
-               // // grid.add(new JButton("3"));
-               // // grid.add(new JButton("4"));
-
-               // // grid.setVisible(true);
-
-               // JPanel panel = new JPanel(new GridBagLayout());
-
-               // Try 2
-               // JPanel panel = new JPanel();
-
-               // JComboBox comboBox = new JComboBox(comboArray);
-
-               // JOptionPane.showConfirmDialog(null, comboBox, "Fav Sports",
-               // JOptionPane.NO_OPTION);
-               // panel.add(comboBox);
-
-               // System.out.println(roomNum);
-
-               // Try 3
-               // roomNum = roomSelect(comboArray);
-
-               // Try 4
-
-               // bPane.add(comboBox);
                System.out.println("Where would you like to move?");
                curPlayer.printNeighbors();
                ComboBoxClass gennus = new ComboBoxClass(comboArray, curPlayer);
 
                roomNum = curPlayer.getRoomChoise();
                System.out.println(roomNum);
-               System.out.println(roomNum);
-               System.out.println(roomNum);
 
-               // while(!curPlayer.getHasPickedRoom()){
+               curPlayer.setRoomChoise(roomNum);
 
-               // while (!curPlayer.hasMoved()) {
-               // curPlayer.showRoles();
-
-               // // try {
-
-               // // } catch (Exception e) {
-               // // System.out.println("Invalid input, please select again");
-               // // }
-               // }
-               // }
             }
             System.out.println("Move is Selected\n");
+         } else if (e.getSource() == bUpgrade) {
+
+         } else if (e.getSource() == bTakeRole) {
+
+            if (curPlayer.getRoom().equals("office")) {
+
+            } else {
+               System.out.println("Player not in office, cannot upgrade");
+               JOptionPane.showMessageDialog(null, "Player not in office, cannot upgrade", curPlayer.getName(),
+                     JOptionPane.ERROR_MESSAGE);
+            }
+
+         } else if (e.getSource() == bEnd) {
+
+            System.out.println("Turn ended for " + curPlayer.getName());
+            JOptionPane.showMessageDialog(null, "Players turn has ended", curPlayer.getName(),
+                  JOptionPane.INFORMATION_MESSAGE);
+
+            curPlayer.endTurn();
+
          }
+
+         System.out.println("got here");
       }
-
-      // public int roomSelect(String[] neighbors) {
-      // int room = -1;
-
-      // String[] comboArray = (curPlayer.getRoom().getNeighbors())
-      // .toArray(new String[curPlayer.getRoom().getNeighbors().size()]);
-      // ActionListener lst = new ActionListener() {
-      // public void actionPerformed(ActionEvent e) {
-      // // String[] sport = new String[] { "Cricket", "FootBall", "Tennis", "Hockey"
-      // };
-      // input = (String) JOptionPane.showInputDialog(BoardLayersListener.this,
-      // "Please select your favorite sport", Select, JOptionPane.INFORMATION_MESSAGE,
-      // null, neighbors,
-      // "Tennis");
-      // JOptionPane.showMessageDialog(null, "You have selected: " + input);
-      // }
-      // };
-      // System.out.println(input);
-      // bRehearse.addActionListener(lst);
-      // // button.setBounds(1300, 450, 100, 100);
-      // add(bRehearse);
-      // pack();
-      // setVisible(true);
-
-      // if (Arrays.asList(neighbors).contains(input)) {
-      // room = Arrays.asList(neighbors).indexOf(input);
-      // }
-      // while (room == -1) {
-
-      // }
-
-      // return room;
-
-      // }
 
       public void mousePressed(MouseEvent e) {
       }

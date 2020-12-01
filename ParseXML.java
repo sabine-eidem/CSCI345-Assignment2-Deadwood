@@ -114,7 +114,7 @@ public class ParseXML {
 
                                     // System.out.println(partName);
                                     // System.out.println(localPartArea);
-                                    System.out.println(takesHashMap);
+                                    //System.out.println(takesHashMap);
                                     takesAreaHashList.add(takesHashMap);
                                 }
                             }

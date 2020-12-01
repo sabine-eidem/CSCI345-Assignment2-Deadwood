@@ -5,8 +5,6 @@ import javax.swing.*;
 
 public class Deadwood {
 
-
-
     public static void main(String args[]) throws IOException {
 
 
@@ -146,6 +144,10 @@ public class Deadwood {
             boardGUI.updateRooms(rooms);
 
         for (int i = 0; i < days; i++) {
+
+
+
+            System.out.println("DAY: " + i);
             for (int j = 0; j < players.size(); j++) {
                 System.out.println("Player " + players.get(j).getName() + ", what would you like to do?");
                 System.out.println("You are in room: " + players.get(j).getRoomName());
@@ -153,145 +155,156 @@ public class Deadwood {
                 if(players.get(j).hasRole()){
                     System.out.println("You are have role " + players.get(j).getRoleName());
                 }
-                players.get(i).isTurn();
+                players.get(j).isTurn();
 
-                boardGUI.updatePlayer(players.get(i));
+                System.out.println("Updating player to " + players.get(j).getName());
+                boardGUI.updatePlayer(players.get(j));
 
-                while (players.get(i).getTurnStatus()) {
 
-                    System.out.println();
-                    System.out.println("Day: " + (i + 1));
-                    System.out.println("1) Act");
-                    System.out.println("2) Rehearse");
-                    System.out.println("3) Take Role");
-                    System.out.println("4) Move");
-                    System.out.println("5) Upgrade");
-                    System.out.println("6) End");
-                    System.out.print("Please pick a number: ");
 
-                    input = in.nextInt();
+                System.out.println(players.get(j).getName() + " turn status " + players.get(j).getTurnStatus());
 
-                    if (input == 1) { // Act
-                        // check acting checklist
+                System.out.println();
+                System.out.println("Day: " + (i + 1));
+                System.out.println("1) Act");
+                System.out.println("2) Rehearse");
+                System.out.println("3) Take Role");
+                System.out.println("4) Move");
+                System.out.println("5) Upgrade");
+                System.out.println("6) End");
+                System.out.println("Please choose an option: \n\n\n");
 
-                        if (players.get(j).hasRole()) {
+                while (players.get(j).getTurnStatus()) {
+
+                    //System.out.println(players.get(j).getName() + " " + players.get(j).getTurnStatus());
+
+                    boardGUI.printPlayers();
+
+
+                    // input = 0; //in.nextInt();
+
+                    // if (input == 1) { // Act
+                    //     // check acting checklist
+
+                    //     if (players.get(j).hasRole()) {
                            
-                            players.get(j).act();
+                    //         players.get(j).act();
 
-                        } else {
-                            System.out.println("Player does not have role");
-                        }
+                    //     } else {
+                    //         System.out.println("Player does not have role");
+                    //     }
 
-                    } else if (input == 2) { // Rehearse
-                        // rehearse checklist
-                        if (players.get(j).hasRole()) {
-                            players.get(j).rehearse();
-                        } else {
-                            System.out.println("Player does not have role");
+                    // } else if (input == 2) { // Rehearse
+                    //     // rehearse checklist
+                    //     if (players.get(j).hasRole()) {
+                    //         players.get(j).rehearse();
+                    //     } else {
+                    //         System.out.println("Player does not have role");
                             
-                        }
+                    //     }
 
-                    } else if (input == 3) { // Take Role
-                        // take a role checklist
-                        if (players.get(j).hasRole()) {
-                            System.out.println("Player already has a role");
-                        } else if((players.get(j).getRoomName().equals("trailer")) || (players.get(j).getRoomName().equals("office"))){
-                            System.out.println("You cannot take on roles in trailer or office");
-                        }else {
+                    // } else if (input == 3) { // Take Role
+                    //     // take a role checklist
+                    //     if (players.get(j).hasRole()) {
+                    //         System.out.println("Player already has a role");
+                    //     } else if((players.get(j).getRoomName().equals("trailer")) || (players.get(j).getRoomName().equals("office"))){
+                    //         System.out.println("You cannot take on roles in trailer or office");
+                    //     }else {
 
-                            System.out.println("\nSelect a Role:");
-                            players.get(j).getRoom().printOffCardRoles();
-                            players.get(j).getRoom().getScene().printSceneInfo(players.get(j).getRoom().getOffCardRoleCount());
+                    //         System.out.println("\nSelect a Role:");
+                    //         players.get(j).getRoom().printOffCardRoles();
+                    //         players.get(j).getRoom().getScene().printSceneInfo(players.get(j).getRoom().getOffCardRoleCount());
 
-                            while(!players.get(j).hasRole()){
+                    //         while(!players.get(j).hasRole()){
 
-                                try{
-                                    System.out.print("Select a role number: ");
-                                    input = in.nextInt();
+                    //             try{
+                    //                 System.out.print("Select a role number: ");
+                    //                 input = in.nextInt();
                                     
 
-                                    //need to check if role is taken
-                                    if(input <= players.get(j).getRoom().getOffCardRoleCount()){
-                                        //player has chosen off card role
+                    //                 //need to check if role is taken
+                    //                 if(input <= players.get(j).getRoom().getOffCardRoleCount()){
+                    //                     //player has chosen off card role
                                         
-                                        if(!players.get(j).getRoom().isRoleTaken(j)){
-                                            players.get(j).setRole(players.get(j).getRoom().getOffCardRole(input-1));
-                                            players.get(j).getRoom().addPlayerToOffCardList(players.get(j));
+                    //                     if(!players.get(j).getRoom().isRoleTaken(j)){
+                    //                         players.get(j).setRole(players.get(j).getRoom().getOffCardRole(input-1));
+                    //                         players.get(j).getRoom().addPlayerToOffCardList(players.get(j));
 
-                                        } else {
-                                            System.out.println("Role is already taken");
-                                        }
-                                    } else {
-                                        //player has chosen on card role
-                                        players.get(j).setRole(players.get(j).getRoom().getScene().getRole(input-1));
-                                        players.get(j).getRoom().addPlayerToOffCardList(players.get(j));
-                                        players.get(j).playerChoseCardRole();
-                                    }
-                                } catch (Exception e){
+                    //                     } else {
+                    //                         System.out.println("Role is already taken");
+                    //                     }
+                    //                 } else {
+                    //                     //player has chosen on card role
+                    //                     players.get(j).setRole(players.get(j).getRoom().getScene().getRole(input-1));
+                    //                     players.get(j).getRoom().addPlayerToOffCardList(players.get(j));
+                    //                     players.get(j).playerChoseCardRole();
+                    //                 }
+                    //             } catch (Exception e){
                                     
-                                }
+                    //             }
 
-                                System.out.println("Cannot accept that answer");
+                    //             System.out.println("Cannot accept that answer");
                                 
-                            }
-                            System.out.println("Player has chosen role: " + players.get(j).getRoleName());
+                    //         }
+                    //         System.out.println("Player has chosen role: " + players.get(j).getRoleName());
                             
-                        }
+                    //     }
 
-                    } else if (input == 4) { // Move
-                        if (players.get(j).hasRole()) {
-                            System.out.println("Player does not have role and cannot cove");
+                    // } else if (input == 4) { // Move
+                    //     if (players.get(j).hasRole()) {
+                    //         System.out.println("Player does not have role and cannot cove");
 
-                        } else if (players.get(j).hasMoved()) {
-                            System.out.println("Player has already moved this turn");
+                    //     } else if (players.get(j).hasMoved()) {
+                    //         System.out.println("Player has already moved this turn");
 
-                        } else {
-                            System.out.println("Where would you like to move?");
-                            players.get(j).printNeighbors();
+                    //     } else {
+                    //         System.out.println("Where would you like to move?");
+                    //         players.get(j).printNeighbors();
 
-                            while (!players.get(j).hasMoved()) {
-                                players.get(j).showRoles();
-                                System.out.print("Please pick a number: ");
-                                try {
-                                    input = in.nextInt() - 1;
-                                    String newLocation = players.get(j).print1Neighbor(input);
-                                    System.out.println("You have chosen: " + newLocation);
+                    //         while (!players.get(j).hasMoved()) {
+                    //             players.get(j).showRoles();
+                    //             System.out.print("Please pick a number: ");
+                    //             try {
+                    //                 input = in.nextInt() - 1;
+                    //                 String newLocation = players.get(j).print1Neighbor(input);
+                    //                 System.out.println("You have chosen: " + newLocation);
 
-                                    for (int k = 0; k < rooms.size(); k++) {
-                                        if (rooms.get(k).getName().equals(newLocation)) {
-                                            Room newRoom = rooms.get(k);
-                                            players.get(j).setRoom(newRoom);
-                                            players.get(j).finishedMove();
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println("Invalid input, please select again");
-                                }
-                            }
+                    //                 for (int k = 0; k < rooms.size(); k++) {
+                    //                     if (rooms.get(k).getName().equals(newLocation)) {
+                    //                         Room newRoom = rooms.get(k);
+                    //                         players.get(j).setRoom(newRoom);
+                    //                         players.get(j).finishedMove();
+                    //                     }
+                    //                 }
+                    //             } catch (Exception e) {
+                    //                 System.out.println("Invalid input, please select again");
+                    //             }
+                    //         }
 
-                            System.out.println("Done with moving");
-                        }
+                    //         System.out.println("Done with moving");
+                    //     }
 
-                    } else if (input == 5) { // Upgrade
-                        if (players.get(j).getRoom().equals("office")) {
+                    // } else if (input == 5) { // Upgrade
+                    //     if (players.get(j).getRoom().equals("office")) {
 
-                        } else {
-                            System.out.println("Player not in office, cannot upgrade");
-                        }
+                    //     } else {
+                    //         System.out.println("Player not in office, cannot upgrade");
+                    //     }
 
-                    } else if (input == 6) { // End
-                        // End turn
-                        System.out.println("******EndingTurn*******\n\n");
-                        players.get(i).endTurn();
-                    }
+                    // } else if (input == 6) { // End
+                    //     // End turn
+                    //     System.out.println("******EndingTurn*******\n\n");
+                    //     players.get(j).endTurn();
+                    // }
 
                 }
+
+
+                System.out.println("OUT of the while loop");
             }
         }
+        boardGUI.endGame();
         in.close();
     }
 
 }
-
-
-

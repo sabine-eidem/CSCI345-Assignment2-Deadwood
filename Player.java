@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 public class Player {
     private String name;
@@ -13,6 +14,7 @@ public class Player {
     private Room currentRoom;
     private int roomChoise;
     private List<Room> rooms;
+    private HashMap <String, Integer> playersPos;
 
 
 
@@ -40,6 +42,11 @@ public class Player {
             roll += (int) (Math.random() * 6) + 1;
         }
         return roll + chips;
+    }
+
+    public void resetTurnStatus(){
+        hasMoved = false;
+        hasPickedRoom = false;
     }
 
     public void act(){
@@ -185,6 +192,14 @@ public class Player {
         return diceName;
     }
 
+    public void setPlayerPos(HashMap<String, Integer> pos){
+        playersPos = pos;
+    }
+
+    public HashMap<String, Integer> getPlayerPos(){
+        return playersPos;
+    }
+
     public void setRoomChoise(int index){
         roomChoise = index;
         System.out.println("Room changed");
@@ -194,6 +209,7 @@ public class Player {
             if (rooms.get(k).getName().equals(newLocation)) {
                 Room newRoom = rooms.get(k);
                 currentRoom = newRoom;
+                playersPos = newRoom.getArea();
                 finishedMove();
             }
         }
