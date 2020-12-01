@@ -143,6 +143,17 @@ public class BoardLayersListener extends JFrame {
       // cardPanel.add(cardLabels[i]);
    }
 
+
+   public void updateRoomCards(){
+      for(int i = 0; i < cardLabels.length; i++){
+
+         String cardName = rooms.get(i).getCardFront();
+         System.out.println(cardName);
+         ImageIcon cIcon = new ImageIcon(cardName);
+         cardLabels[i].setIcon(cIcon);
+      }
+   }
+
    public void initiatePlayers(List<Player> players) {
 
       playerLabels = new JLabel[players.size()];
@@ -179,22 +190,32 @@ public class BoardLayersListener extends JFrame {
          playerLabels[i].setIcon(pIcon);
          playerLabels[i].setBounds(x, y, pIcon.getIconWidth() + 2, pIcon.getIconHeight());
          playerLabels[i].setOpaque(true);
-         bPane.add(playerLabels[i], new Integer(1));
+         bPane.add(playerLabels[i], new Integer(3));
          bPane.repaint();
 
          players.get(i).setPlayerPos(pos);
+         players.get(i).setPIcon(pIcon);
 
          System.out.println("Player " + players.get(i).getName() + " added");
       }
 
    }
 
-   public void printPlayers() {
+   public void updatePlayer(int playerIndex) {
+
+      curPlayer.getRoom().setViseted();
+
+      HashMap<String, Integer> pos = curPlayer.getPlayerPos();
+      ImageIcon pIcon = curPlayer.getPICon();
+
+
+         playerLabels[playerIndex].setBounds(pos.get("x"), pos.get("y"), pIcon.getIconWidth() + 2, pIcon.getIconHeight());
+      
 
    }
 
    public void endGame() {
-      JOptionPane.showMessageDialog(null, "Game has ended", "Comgrats " + curPlayer.getName(),
+      JOptionPane.showMessageDialog(null, "Game has ended", "Congrats " + curPlayer.getName(),
             JOptionPane.INFORMATION_MESSAGE);
    }
 
@@ -253,6 +274,30 @@ public class BoardLayersListener extends JFrame {
    public void updateRooms(List<Room> Rooms) {
       rooms = Rooms;
    }
+
+
+
+   public void updateRoomCards(List<Room> rooms){
+      for(int i = 0; i < 10; i++){
+         Room room = rooms.get(i);
+
+         String iconName = "";
+         if(room.getVisted()){
+            iconName = "pics/cards/" + room.getCardFront();
+            System.out.println(room.getName() + " iconName: " + iconName);
+         } else {
+
+            iconName = "pics/CardBack-small.jpg";
+         }
+         
+         System.out.println(room.getName() + " visited: " + room.getVisted());
+         ImageIcon cIcon = new ImageIcon(iconName);
+         cardLabels[i].setIcon(cIcon);
+
+      }
+   }
+
+
    // This class implements Mouse Events
 
    class boardMouseListener implements MouseListener {
@@ -300,16 +345,31 @@ public class BoardLayersListener extends JFrame {
                curPlayer.printNeighbors();
                ComboBoxClass gennus = new ComboBoxClass(comboArray, curPlayer);
 
-               roomNum = curPlayer.getRoomChoise();
-               System.out.println(roomNum);
 
-               curPlayer.setRoomChoise(roomNum);
+               if(curPlayer.getHasPickedRoom()){
+                  String cardFront = curPlayer.getRoom().getCardFront();
+                  System.out.println("CardFront " + cardFront);
+
+                  
+                  roomNum = curPlayer.getRoomChoise();
+                  System.out.println(roomNum);
+                  curPlayer.setRoomChoise(roomNum);
+
+                  updateRoomCards();
+
+
+                  ImageIcon cIcon = new ImageIcon(cardFront);
+                  cardLabels[roomNum].setIcon(cIcon);
+
+                  curPlayer.setHasPickdTrue();
+                  curPlayer.finishedMove();
+
+               }
+
 
             }
             System.out.println("Move is Selected\n");
          } else if (e.getSource() == bUpgrade) {
-
-         } else if (e.getSource() == bTakeRole) {
 
             if (curPlayer.getRoom().equals("office")) {
 
@@ -318,6 +378,8 @@ public class BoardLayersListener extends JFrame {
                JOptionPane.showMessageDialog(null, "Player not in office, cannot upgrade", curPlayer.getName(),
                      JOptionPane.ERROR_MESSAGE);
             }
+         } else if (e.getSource() == bTakeRole) {
+
 
          } else if (e.getSource() == bEnd) {
 
@@ -328,8 +390,6 @@ public class BoardLayersListener extends JFrame {
             curPlayer.endTurn();
 
          }
-
-         System.out.println("got here");
       }
 
       public void mousePressed(MouseEvent e) {

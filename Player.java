@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 public class Player {
     private String name;
     private String diceName;
@@ -15,6 +17,7 @@ public class Player {
     private int roomChoise;
     private List<Room> rooms;
     private HashMap <String, Integer> playersPos;
+    private ImageIcon pIcon;
 
 
 
@@ -200,6 +203,15 @@ public class Player {
         return playersPos;
     }
 
+
+    public void setPIcon(ImageIcon PIcon){
+        pIcon = PIcon;
+    }
+
+    public ImageIcon getPICon(){
+        return pIcon;
+    }
+
     public void setRoomChoise(int index){
         roomChoise = index;
         System.out.println("Room changed");
@@ -210,14 +222,18 @@ public class Player {
                 Room newRoom = rooms.get(k);
                 currentRoom = newRoom;
                 playersPos = newRoom.getArea();
-                finishedMove();
+                
             }
         }
-        hasPickedRoom = true;
+        //hasPickedRoom = true;
     }
 
     public int getRoomChoise(){
         return roomChoise;
+    }
+
+    public void setHasPickdTrue(){
+        hasPickedRoom = true;
     }
 
     public boolean getHasPickedRoom(){

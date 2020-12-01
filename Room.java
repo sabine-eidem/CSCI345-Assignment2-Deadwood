@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 public class Room {
     private String name;
     private int shotCounter;
@@ -18,6 +20,7 @@ public class Room {
     private List<HashMap<String, Integer>> takesAreaHashList;
     private boolean visited;
     private boolean wrapped;
+    private String cardFront;
 
     public Room(String newName, List<Boolean> shots, List<String> neighborNames, List<Role> roles,
                 HashMap<String, Integer> area, List<HashMap<String, Integer>> NativePartsList, 
@@ -68,6 +71,14 @@ public class Room {
         printShotList();
         printNeighbors();
         printOffCardRoles();
+    }
+
+    public boolean getVisted(){
+        return visited;
+    }
+
+    public void setViseted(){
+        visited = true;
     }
     
     public void printNeighbors() {
@@ -123,8 +134,9 @@ public class Room {
         return currentScene;
     }
 
-    public void assignScene(Scene newScene){
+    public void assignScene(Scene newScene, String CardFront){
         currentScene = newScene;
+        cardFront = CardFront;
         currentScene.assign();
     }
 
@@ -173,6 +185,10 @@ public class Room {
 
     public List<String> getNeighbors(){
         return neighbors;
+    }
+
+    public String getCardFront(){
+        return cardFront;
     }
 
     public void wrappedPayout(){

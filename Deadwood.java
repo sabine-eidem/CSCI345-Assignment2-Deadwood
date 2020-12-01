@@ -59,7 +59,17 @@ public class Deadwood {
                 while (isAssigned == false) {
                     sceneIndex = (int) (Math.random() * (max - min + 1) + min);
                     if (!scenes.get(sceneIndex).getAssigned()) {
-                        rooms.get(i).assignScene(scenes.get(sceneIndex));
+
+                        String cardPicName = sceneIndex + ".png";
+                        if (cardPicName.length() < 6){
+                            StringBuilder str = new StringBuilder(cardPicName);
+                            str.insert(0, "0");
+                            cardPicName = str.toString();    
+                        }
+
+                        //ImageIcon picIcon = new ImageIcon(cardPicName);
+                        
+                        rooms.get(i).assignScene(scenes.get(sceneIndex), cardPicName);
                         // System.out.println(rooms.get(i).getName() + " has scene " +
                         // scenes.get(sceneIndex).getName());
                         isAssigned = true;
@@ -173,13 +183,14 @@ public class Deadwood {
                 System.out.println("5) Upgrade");
                 System.out.println("6) End");
                 System.out.println("Please choose an option: \n\n\n");
+                boardGUI.updateRoomCards(rooms);
 
                 while (players.get(j).getTurnStatus()) {
 
                     //System.out.println(players.get(j).getName() + " " + players.get(j).getTurnStatus());
 
-                    boardGUI.printPlayers();
-
+                    boardGUI.updatePlayer(j);
+                    
 
                     // input = 0; //in.nextInt();
 
@@ -299,7 +310,7 @@ public class Deadwood {
 
                 }
 
-
+               
                 System.out.println("OUT of the while loop");
             }
         }
