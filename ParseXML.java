@@ -410,6 +410,7 @@ public class ParseXML {
                     // number of parts is not the same for each card.
                     // must account for that before hand
                     NodeList parts = sub.getChildNodes();
+                    HashMap<String, Integer> partArea = new HashMap<String, Integer>();                 
                     
 
                      partName = sub.getAttributes().getNamedItem("name").getNodeValue();
@@ -419,7 +420,6 @@ public class ParseXML {
 
                     for (int k = 0; k < parts.getLength(); k++) {
                         Node part = parts.item(k);
-                        HashMap<String, Integer> partArea = new HashMap<String, Integer>();                 
 
                         if ("line".equals(part.getNodeName())) {
                             //System.out.println("Part" + ": " + partName + "\n ->level " + partLevel);
@@ -444,8 +444,8 @@ public class ParseXML {
                             //System.out.println("Area: " + x + ", " + y + ", " + h + ", " + w);
                         }
                         
-                        eachRole.add(new Role(partName, Integer.parseInt(partLevel), line, partArea));    
                     }
+                    eachRole.add(new Role(partName, Integer.parseInt(partLevel), line, partArea));    
                     //System.out.println("\n");
                 }
                 // This is were all the data for each part of the arraylist is added

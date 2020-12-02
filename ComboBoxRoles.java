@@ -1,20 +1,23 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.*;
 
-public class ComboBoxMove extends JFrame implements ActionListener{
+public class ComboBoxRoles extends JFrame implements ActionListener{
 
  JComboBox comboBox;
  Player curPlayer;
+ private ArrayList<Role> roleClass;
 
 
- ComboBoxMove(String[] neighbors, Player CurPlayer){
+ ComboBoxRoles(String[] roles, Player CurPlayer, ArrayList<Role> RoleClass){
   this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
   this.setLayout(new FlowLayout()); 
   curPlayer = CurPlayer;
+  roleClass = RoleClass;
 
   
-  comboBox = new JComboBox(neighbors);
+  comboBox = new JComboBox(roles);
   comboBox.addActionListener(this);
   
 
@@ -26,9 +29,7 @@ public class ComboBoxMove extends JFrame implements ActionListener{
  @Override
  public void actionPerformed(ActionEvent e) {
   if(e.getSource()==comboBox) {
-   System.out.println(comboBox.getSelectedItem());
-   System.out.println(comboBox.getSelectedIndex());
-   curPlayer.setRoomChoise(comboBox.getSelectedIndex());
+      curPlayer.setRole(roleClass.get(comboBox.getSelectedIndex()));
   }
  }
 

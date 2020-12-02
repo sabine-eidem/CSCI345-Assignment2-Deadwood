@@ -8,13 +8,13 @@ public class ComboBoxMove extends JFrame implements ActionListener{
  Player curPlayer;
 
 
- ComboBoxMove(String[] neighbors, Player CurPlayer){
+ ComboBoxMove(String[] roles, Player CurPlayer){
   this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
   this.setLayout(new FlowLayout()); 
   curPlayer = CurPlayer;
 
   
-  comboBox = new JComboBox(neighbors);
+  comboBox = new JComboBox(roles);
   comboBox.addActionListener(this);
   
 

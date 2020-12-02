@@ -93,6 +93,7 @@ public class Player {
 
         if(newRole.getRank() <= rank){
             currentRole = newRole;
+            playersPos = newRole.getAreaHashMap();
             hasRole = true;
 
         } else {

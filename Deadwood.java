@@ -41,6 +41,11 @@ public class Deadwood {
 
         }
 
+
+        for(int i = 0; i < scenes.size(); i++){
+            scenes.get(i).printSceneInfo();
+        }
+
         Document board;
         ParseXML boardParsing = new ParseXML();
         try {
@@ -68,7 +73,7 @@ public class Deadwood {
                         }
 
                         //ImageIcon picIcon = new ImageIcon(cardPicName);
-                        
+                        System.out.println(cardPicName);
                         rooms.get(i).assignScene(scenes.get(sceneIndex), cardPicName);
                         // System.out.println(rooms.get(i).getName() + " has scene " +
                         // scenes.get(sceneIndex).getName());
@@ -183,13 +188,13 @@ public class Deadwood {
                 System.out.println("5) Upgrade");
                 System.out.println("6) End");
                 System.out.println("Please choose an option: \n\n\n");
-                boardGUI.updateRoomCards(rooms);
-
+                
                 while (players.get(j).getTurnStatus()) {
-
+                    
                     //System.out.println(players.get(j).getName() + " " + players.get(j).getTurnStatus());
-
+                    
                     boardGUI.updatePlayer(j);
+                    boardGUI.updateRoomCards(rooms);
                     
 
                     // input = 0; //in.nextInt();

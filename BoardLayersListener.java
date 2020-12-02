@@ -143,9 +143,8 @@ public class BoardLayersListener extends JFrame {
       // cardPanel.add(cardLabels[i]);
    }
 
-
-   public void updateRoomCards(){
-      for(int i = 0; i < cardLabels.length; i++){
+   public void updateRoomCards() {
+      for (int i = 0; i < cardLabels.length; i++) {
 
          String cardName = rooms.get(i).getCardFront();
          System.out.println(cardName);
@@ -165,25 +164,21 @@ public class BoardLayersListener extends JFrame {
          // ImageIcon pIcon = new ImageIcon("pics/dice/b1.png");
 
          // set bounds
-         
-         
-         
+
          HashMap<String, Integer> pos = new HashMap<>();
 
-
-         
          int x, y;
-         
+
          int minX = 1000;
          int maxX = 1150;
-         
+
          int minY = 300;
          int maxY = 400;
-         
+
          Random random = new Random();
          x = random.nextInt(maxX + 1 - minX) + minX;
          y = random.nextInt(maxY + 1 - minY) + minY;
-         
+
          pos.put("x", x);
          pos.put("y", y);
          // add
@@ -208,9 +203,7 @@ public class BoardLayersListener extends JFrame {
       HashMap<String, Integer> pos = curPlayer.getPlayerPos();
       ImageIcon pIcon = curPlayer.getPICon();
 
-
-         playerLabels[playerIndex].setBounds(pos.get("x"), pos.get("y"), pIcon.getIconWidth() + 2, pIcon.getIconHeight());
-      
+      playerLabels[playerIndex].setBounds(pos.get("x"), pos.get("y"), pIcon.getIconWidth() + 2, pIcon.getIconHeight());
 
    }
 
@@ -275,28 +268,22 @@ public class BoardLayersListener extends JFrame {
       rooms = Rooms;
    }
 
-
-
-   public void updateRoomCards(List<Room> rooms){
-      for(int i = 0; i < 10; i++){
+   public void updateRoomCards(List<Room> rooms) {
+      for (int i = 0; i < 10; i++) {
          Room room = rooms.get(i);
 
          String iconName = "";
-         if(room.getVisted()){
+         if (room.getVisted()) {
             iconName = "pics/cards/" + room.getCardFront();
-            System.out.println(room.getName() + " iconName: " + iconName);
          } else {
-
             iconName = "pics/CardBack-small.jpg";
          }
-         
-         System.out.println(room.getName() + " visited: " + room.getVisted());
+
          ImageIcon cIcon = new ImageIcon(iconName);
          cardLabels[i].setIcon(cIcon);
 
       }
    }
-
 
    // This class implements Mouse Events
 
@@ -343,20 +330,17 @@ public class BoardLayersListener extends JFrame {
 
                System.out.println("Where would you like to move?");
                curPlayer.printNeighbors();
-               ComboBoxClass gennus = new ComboBoxClass(comboArray, curPlayer);
+               ComboBoxMove gennus = new ComboBoxMove(comboArray, curPlayer);
 
-
-               if(curPlayer.getHasPickedRoom()){
+               if (curPlayer.getHasPickedRoom()) {
                   String cardFront = curPlayer.getRoom().getCardFront();
                   System.out.println("CardFront " + cardFront);
 
-                  
                   roomNum = curPlayer.getRoomChoise();
                   System.out.println(roomNum);
                   curPlayer.setRoomChoise(roomNum);
 
                   updateRoomCards();
-
 
                   ImageIcon cIcon = new ImageIcon(cardFront);
                   cardLabels[roomNum].setIcon(cIcon);
@@ -365,7 +349,6 @@ public class BoardLayersListener extends JFrame {
                   curPlayer.finishedMove();
 
                }
-
 
             }
             System.out.println("Move is Selected\n");
@@ -379,7 +362,95 @@ public class BoardLayersListener extends JFrame {
                      JOptionPane.ERROR_MESSAGE);
             }
          } else if (e.getSource() == bTakeRole) {
+            // take a role checklist
+            if (curPlayer.hasRole()) {
+               System.out.println("Player already has a role");
+               JOptionPane.showMessageDialog(null, "Player already has a role", curPlayer.getName(),
+                     JOptionPane.ERROR_MESSAGE);
+               
 
+            } else if ((curPlayer.getRoomName().equals("trailer")) || (curPlayer.getRoomName().equals("office"))) {
+               System.out.println("You cannot take on roles in trailer or office");
+               JOptionPane.showMessageDialog(null, "You cannot take on roles in trailer or office", curPlayer.getName(),
+                     JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+               System.out.println("\nSelect a Role:");
+               curPlayer.getRoom().printOffCardRoles();
+               curPlayer.getRoom().getScene().printSceneInfo(curPlayer.getRoom().getOffCardRoleCount());
+
+
+               ArrayList<Role> roles = new ArrayList<Role>();
+
+               roles.addAll(curPlayer.getRoom().getOffCardRoles());
+               roles.addAll(curPlayer.getRoom().getScene().getRoles());
+
+               String[] roleNames = new String[roles.size()];
+
+               for(int i = 0; i < roles.size(); i++){
+                  String roleName = roles.get(i).getName();
+                  roleNames[i] = roleName;
+                  System.out.println(roleName);
+               }
+
+               while (!curPlayer.hasRole()) {
+
+                  System.out.print("Select a role number: ");
+
+
+
+                  ComboBoxRoles gennusis = new ComboBoxRoles(roleNames, curPlayer, roles);
+
+
+                  if (curPlayer.getHasPickedRoom()) {
+                  String cardFront = curPlayer.getRoom().getCardFront();
+                  System.out.println("CardFront " + cardFront);
+
+                  roomNum = curPlayer.getRoomChoise();
+                  System.out.println(roomNum);
+                  curPlayer.setRoomChoise(roomNum);
+                  updateRoomCards();
+                  
+                  ImageIcon cIcon = new ImageIcon(cardFront);
+                  cardLabels[roomNum].setIcon(cIcon);
+                  
+                  curPlayer.setHasPickdTrue();
+                  curPlayer.finishedMove();
+                  
+                  int asdf = gennusis.comboBox.getSelectedIndex();
+                  System.out.println(asdf);
+               }
+
+                  int input = 1;
+
+                  // need to check if role is taken
+                  if (input <= curPlayer.getRoom().getOffCardRoleCount()) {
+                     // player has chosen off card role
+
+                     if (!curPlayer.getRoom().isRoleTaken(input)) {
+                        curPlayer.setRole(curPlayer.getRoom().getOffCardRole(input - 1));
+                        curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
+
+                     } else {
+                        System.out.println("Role is already taken");
+                        JOptionPane.showMessageDialog(null, "Role is already taken",
+                              curPlayer.getName(), JOptionPane.ERROR_MESSAGE);
+                        
+                     }
+                  } else {
+                     // player has chosen on card role
+                     curPlayer.setRole(curPlayer.getRoom().getScene().getRole(input - 1));
+                     curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
+                     curPlayer.playerChoseCardRole();
+                  }
+
+                  System.out.println("Cannot accept that answer");
+
+               }
+               System.out.println("Player has chosen role: " + curPlayer.getRoleName());
+
+            }
 
          } else if (e.getSource() == bEnd) {
 
