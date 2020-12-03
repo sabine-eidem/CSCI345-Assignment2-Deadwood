@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class Room {
         areaInfo = area;
         nativePartsList = NativePartsList;
         takesAreaHashList = TakesAreaHashList;
+        Collections.reverse(takesAreaHashList);
 
         //roomNeighbors = convertNeighborsToRoomClass();
     }
@@ -110,6 +112,11 @@ public class Room {
             System.out.println(" -Shot " + (i+1) + " taken: " + shotList.get(i));
         }
 
+    }
+
+
+    public List<Boolean> getShotList(){
+        return shotList;
     }
 
     // return true if list is all true (then its a wrap!)

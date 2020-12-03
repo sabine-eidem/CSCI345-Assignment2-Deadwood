@@ -39,7 +39,7 @@ public class Player {
         return name;
     }
 
-    private int rollDice(int numDice) {
+    public int rollDice(int numDice) {
         int roll = 0;
         for (int i = 0; i < numDice; i++) {
             roll += (int) (Math.random() * 6) + 1;

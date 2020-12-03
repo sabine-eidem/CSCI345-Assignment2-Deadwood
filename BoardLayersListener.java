@@ -26,6 +26,20 @@ public class BoardLayersListener extends JFrame {
    JLabel playerlabel;
    JLabel mLabel;
 
+
+   
+   String currPlayerName   = "";
+   String currPlayerRank   = "";
+   String currPlayerCoins  = "";
+   String currPlayerChips  = "";
+   String currPlayerDollars= "";
+   
+   JLabel bPlayerName;
+   JLabel bPlayerRank;
+   JLabel bPlayerCoins;
+   JLabel bPlayerChips;
+   JLabel bPlayerDollars;
+
    // JButtons
    JButton bAct;
    JButton bRehearse;
@@ -39,10 +53,6 @@ public class BoardLayersListener extends JFrame {
 
    Player curPlayer;
    private List<Room> rooms;
-
-   // For roomSelect Combo box method
-   static final String Select = "Sports";
-   String input = "";
 
    private int roomNum;
 
@@ -87,48 +97,81 @@ public class BoardLayersListener extends JFrame {
 
       // Create the Menu for action buttons
       mLabel = new JLabel("MENU");
-      mLabel.setBounds(icon.getIconWidth() + 40, 0, 100, 20);
+      mLabel.setBounds(icon.getIconWidth() + 40, 0, 150, 20);
       bPane.add(mLabel, new Integer(2));
 
       // Create Action buttons
       bAct = new JButton("ACT");
-      bAct.setBackground(Color.white);
-      bAct.setBounds(icon.getIconWidth() + 10, 30, 100, 20);
+      bAct.setBackground(Color.lightGray);
+      bAct.setBounds(icon.getIconWidth() + 10, 30, 150, 20);
       bAct.addMouseListener(new boardMouseListener());
 
       bRehearse = new JButton("REHEARSE");
-      bRehearse.setBackground(Color.white);
-      bRehearse.setBounds(icon.getIconWidth() + 10, 60, 100, 20);
+      bRehearse.setBackground(Color.lightGray);
+      bRehearse.setBounds(icon.getIconWidth() + 10, 60, 150, 20);
       bRehearse.addMouseListener(new boardMouseListener());
 
       bMove = new JButton("MOVE");
-      bMove.setBackground(Color.white);
-      bMove.setBounds(icon.getIconWidth() + 10, 90, 100, 20);
+      bMove.setBackground(Color.lightGray);
+      bMove.setBounds(icon.getIconWidth() + 10, 90, 150, 20);
       bMove.addMouseListener(new boardMouseListener());
 
       bTakeRole = new JButton("Take Role");
-      bTakeRole.setBackground(Color.white);
-      bTakeRole.setBounds(icon.getIconWidth() + 10, 120, 100, 20);
+      bTakeRole.setBackground(Color.lightGray);
+      bTakeRole.setBounds(icon.getIconWidth() + 10, 120, 150, 20);
       bTakeRole.addMouseListener(new boardMouseListener());
 
       bUpgrade = new JButton("Upgrade");
-      bUpgrade.setBackground(Color.white);
-      bUpgrade.setBounds(icon.getIconWidth() + 10, 150, 100, 20);
+      bUpgrade.setBackground(Color.lightGray);
+      bUpgrade.setBounds(icon.getIconWidth() + 10, 150, 150, 20);
       bUpgrade.addMouseListener(new boardMouseListener());
 
       bEnd = new JButton("End");
-      bEnd.setBackground(Color.white);
-      bEnd.setBounds(icon.getIconWidth() + 10, 180, 100, 20);
+      bEnd.setBackground(Color.lightGray);
+      bEnd.setBounds(icon.getIconWidth() + 10, 180, 150, 20);
       bEnd.addMouseListener(new boardMouseListener());
 
+
+
+
+      bPlayerName = new JLabel(currPlayerName);
+      bPlayerName.setBackground(Color.darkGray);
+      bPlayerName.setBounds(icon.getIconWidth() + 10, 300, 150, 20);
+
+      
+      bPlayerRank = new JLabel(currPlayerRank);
+      bPlayerRank.setBackground(Color.darkGray);
+      bPlayerRank.setBounds(icon.getIconWidth() + 10, 320, 150, 20);
+
+      bPlayerCoins = new JLabel(currPlayerRank);
+      bPlayerCoins.setBackground(Color.darkGray);
+      bPlayerCoins.setBounds(icon.getIconWidth() + 10, 340, 150, 20);
+
+      bPlayerChips = new JLabel(currPlayerRank);
+      bPlayerChips.setBackground(Color.darkGray);
+      bPlayerChips.setBounds(icon.getIconWidth() + 10, 360, 150, 20);
+
+      bPlayerDollars = new JLabel(currPlayerRank);
+      bPlayerDollars.setBackground(Color.darkGray);
+      bPlayerDollars.setBounds(icon.getIconWidth() + 10, 380, 150, 20);
+
+      
+
       // Place the action buttons in the top layer
+      bPane.setBackground(Color.darkGray);
+      this.setPreferredSize(new Dimension(1500, 1500));
       bPane.add(bAct, new Integer(2));
       bPane.add(bRehearse, new Integer(2));
       bPane.add(bMove, new Integer(2));
       bPane.add(bTakeRole, new Integer(2));
       bPane.add(bUpgrade, new Integer(2));
       bPane.add(bEnd, new Integer(2));
-
+      
+      bPane.add(bPlayerName, new Integer(2));
+      bPane.add(bPlayerRank, new Integer(2));
+      bPane.add(bPlayerCoins, new Integer(2));
+      bPane.add(bPlayerChips, new Integer(2));
+      bPane.add(bPlayerDollars, new Integer(2));
    }
 
    public void addCard(HashMap<String, Integer> area, int i) {
@@ -205,6 +248,12 @@ public class BoardLayersListener extends JFrame {
 
       playerLabels[playerIndex].setBounds(pos.get("x"), pos.get("y"), pIcon.getIconWidth() + 2, pIcon.getIconHeight());
 
+      currPlayerName = curPlayer.getName();
+      bPlayerName.setText(currPlayerName);
+      bPlayerRank.setText("Rank: " + Integer.toString(curPlayer.getRank()));
+      bPlayerCoins.setText("Coins: " + Integer.toString(curPlayer.getCredits()));
+      bPlayerChips.setText("Chips: " + Integer.toString(curPlayer.getChips()));
+      bPlayerDollars.setText("Dollars: " + Integer.toString(curPlayer.getDollars()));
    }
 
    public void endGame() {
@@ -252,8 +301,11 @@ public class BoardLayersListener extends JFrame {
             shotLable.setBounds(takesAreaHashMap.get("x"), takesAreaHashMap.get("y"), takesAreaHashMap.get("w"),
                   takesAreaHashMap.get("h"));
             // redPanel.setBounds(500, 100, 50, 50);
-            shotLable.setOpaque(true);
-            bPane.add(shotLable, new Integer(1));
+
+            shotLable.setOpaque(false);
+            if(rooms.get(i).getShotList().get(j)){
+               bPane.add(shotLable, new Integer(1));
+            } 
          }
       }
    }
@@ -295,7 +347,45 @@ public class BoardLayersListener extends JFrame {
          if (e.getSource() == bAct) {
             if (curPlayer.hasRole()) {
 
-               curPlayer.act();
+               //curPlayer.act();
+
+               Room currentRoom = curPlayer.getRoom();
+               if (!currentRoom.getWraped()) {
+                  int roll;
+                  int budget = currentRoom.getScene().getBudget();
+                  System.out.println("You are rolling to get at or above " + budget);
+                  String message1 = "You are rolling to get at or above " + budget;
+
+                  roll = curPlayer.rollDice(1);
+                  System.out.println("You roll a " + roll);
+                  String message2 = "You roll a " + roll;
+
+                  String message3;
+                  if (roll >= budget) {
+                     System.out.println("You did well in the shot!");
+                     message3 = "You did well in the shot!";
+                     currentRoom.takeOffAShot();
+                  } else {
+                     System.out.println("You did not do well in the shot");
+                     message3 = "You did NOT do well in the shot!";
+                  }
+
+                  String totalMessage = message1 + "\n" + message2 + "\n" + message3;
+
+                  JOptionPane.showMessageDialog(null, totalMessage, curPlayer.getName(),
+                        JOptionPane.ERROR_MESSAGE);
+
+                  currentRoom.printShotList();
+               } else {
+                  System.out.println("Scene is wrapped, you cannot act");
+                  JOptionPane.showMessageDialog(null, 
+                        "Scene is wrapped, you cannot act", curPlayer.getName(), JOptionPane.ERROR_MESSAGE);
+               }
+
+
+
+
+
 
             } else {
                System.out.println("Player does not have role");

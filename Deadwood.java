@@ -65,7 +65,7 @@ public class Deadwood {
                     sceneIndex = (int) (Math.random() * (max - min + 1) + min);
                     if (!scenes.get(sceneIndex).getAssigned()) {
 
-                        String cardPicName = sceneIndex + ".png";
+                        String cardPicName = (sceneIndex+1) + ".png";
                         if (cardPicName.length() < 6){
                             StringBuilder str = new StringBuilder(cardPicName);
                             str.insert(0, "0");
@@ -195,6 +195,7 @@ public class Deadwood {
                     
                     boardGUI.updatePlayer(j);
                     boardGUI.updateRoomCards(rooms);
+                    boardGUI.printTakesLocations(rooms);
                     
 
                     // input = 0; //in.nextInt();
