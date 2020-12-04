@@ -248,6 +248,8 @@ public class BoardLayersListener extends JFrame {
       HashMap<String, Integer> pos = curPlayer.getPlayerPos();
       ImageIcon pIcon = curPlayer.getPICon();
 
+     
+
       playerLabels[playerIndex].setBounds(pos.get("x"), pos.get("y"), pIcon.getIconWidth() + 2, pIcon.getIconHeight());
 
       currPlayerName = curPlayer.getName();
@@ -461,7 +463,7 @@ public class BoardLayersListener extends JFrame {
                }
 
             }
-            System.out.println("Move is Selected\n");
+            
          } else if (e.getSource() == bUpgrade) {
 
             if (curPlayer.getRoom().equals("office")) {
@@ -490,15 +492,14 @@ public class BoardLayersListener extends JFrame {
                curPlayer.getRoom().printOffCardRoles();
                curPlayer.getRoom().getScene().printSceneInfo(curPlayer.getRoom().getOffCardRoleCount());
 
-
                ArrayList<Role> roles = new ArrayList<Role>();
-
+               
                roles.addAll(curPlayer.getRoom().getOffCardRoles());
-
-
+               
+               
                ArrayList<Role> tempRoles = new ArrayList<Role>();
                roles.addAll(curPlayer.getRoom().getScene().getRoles());
-
+               
                String[] roleNames = new String[roles.size()];
 
                for(int i = 0; i < roles.size(); i++){
@@ -506,20 +507,19 @@ public class BoardLayersListener extends JFrame {
                   roleNames[i] = roleName;
                   System.out.println(roleName);
                }
-
+               
                while (!curPlayer.hasRole()) {
-
+                  
                   System.out.print("Select a role number: ");
-
-
-
+                  
+                  
                   ComboBoxRoles gennusis = new ComboBoxRoles(roleNames, curPlayer, roles);
 
-
+                  
                   if (curPlayer.getHasPickedRoom()) {
-                  String cardFront = curPlayer.getRoom().getCardFront();
+                     String cardFront = curPlayer.getRoom().getCardFront();
                   System.out.println("CardFront " + cardFront);
-
+                  
                   roomNum = curPlayer.getRoomChoise();
                   System.out.println(roomNum);
                   curPlayer.setRoomChoise(roomNum);
@@ -534,17 +534,20 @@ public class BoardLayersListener extends JFrame {
                   int asdf = gennusis.comboBox.getSelectedIndex();
                   System.out.println(asdf);
                }
-
-                  int input = 1;
-
-                  // need to check if role is taken
-                  if (input <= curPlayer.getRoom().getOffCardRoleCount()) {
-                     // player has chosen off card role
-
-                     if (!curPlayer.getRoom().isRoleTaken(input)) {
-                        curPlayer.setRole(curPlayer.getRoom().getOffCardRole(input - 1));
-                        curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
-
+               
+               
+               int input = 1; //size of the offcard list
+               
+               // need to check if role is taken
+               if (input <= curPlayer.getRoom().getOffCardRoleCount()) {
+                  // player has chosen off card role
+                  
+                  
+                  
+                  if (!curPlayer.getRoom().isRoleTaken(input)) {
+                     curPlayer.setRole(curPlayer.getRoom().getOffCardRole(input - 1), false);
+                     curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
+                     
                      } else {
                         System.out.println("Role is already taken");
                         JOptionPane.showMessageDialog(null, "Role is already taken",
@@ -553,7 +556,7 @@ public class BoardLayersListener extends JFrame {
                      }
                   } else {
                      // player has chosen on card role
-                     curPlayer.setRole(curPlayer.getRoom().getScene().getRole(input - 1));
+                     curPlayer.setRole(curPlayer.getRoom().getScene().getRole(input - 1), true);
                      curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
                      curPlayer.playerChoseCardRole();
                   }

@@ -95,6 +95,7 @@ public class Player {
             currentRole = newRole;
 
             HashMap<String, Integer> tempHash = new HashMap<String, Integer>();
+            System.out.println("problem with on card");
 
             if(onCard){
                 //add current player position to card ash
@@ -114,7 +115,6 @@ public class Player {
                 tempHash = newRole.getAreaHashMap();
             }
 
-            System.out.println("problem with on card");
             playersPos = tempHash;
             hasRole = true;
 
@@ -127,11 +127,6 @@ public class Player {
 
         if (newRole.getRank() <= rank) {
             currentRole = newRole;
-
-            HashMap<String, Integer> tempHash = new HashMap<String, Integer>();
-
-            
-            playersPos = tempHash;
             hasRole = true;
 
         } else {
