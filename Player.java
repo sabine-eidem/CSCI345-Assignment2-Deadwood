@@ -81,6 +81,10 @@ public class Player {
         return rank;
     }
 
+    public void setRank(int newRank){
+        rank = newRank;
+    }
+
     public void playerChoseCardRole(){
         onCard = true;
     }

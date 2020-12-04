@@ -48,6 +48,8 @@ public class BoardLayersListener extends JFrame {
    JButton bUpgrade;
    JButton bEnd;
 
+   private HashMap<String, Integer> officePos = new HashMap<>();
+
    // JLayered Pane
    JLayeredPane bPane;
 
@@ -236,6 +238,20 @@ public class BoardLayersListener extends JFrame {
          players.get(i).setPlayerPos(pos);
          players.get(i).setPIcon(pIcon);
 
+         minX = 0;
+         maxX = 150;
+
+         minY = 470;
+         maxY = 600;
+
+         x = random.nextInt(maxX + 1 - minX) + minX;
+         y = random.nextInt(maxY + 1 - minY) + minY;
+
+         officePos.put("x", x);
+         officePos.put("y", y);
+
+         System.out.println("Player " + players.get(i).getName() + " added");
+
          System.out.println("Player " + players.get(i).getName() + " added");
       }
 
@@ -250,8 +266,15 @@ public class BoardLayersListener extends JFrame {
 
      
 
-      playerLabels[playerIndex].setBounds(pos.get("x"), pos.get("y"), pIcon.getIconWidth() + 2, pIcon.getIconHeight());
+      if (curPlayer.getRoom().getName().equals("office")) {
 
+         playerLabels[playerIndex].setBounds(officePos.get("x"), officePos.get("y"), pIcon.getIconWidth() + 2,
+               pIcon.getIconHeight());
+      } else {
+
+         playerLabels[playerIndex].setBounds(pos.get("x"), pos.get("y"), pIcon.getIconWidth() + 2,
+               pIcon.getIconHeight());
+      }
       currPlayerName = curPlayer.getName();
       bPlayerName.setText(currPlayerName);
       bPlayerRank.setText("Rank: " + Integer.toString(curPlayer.getRank()));
@@ -404,11 +427,6 @@ public class BoardLayersListener extends JFrame {
                         "Scene is wrapped, you cannot act", curPlayer.getName(), JOptionPane.ERROR_MESSAGE);
                }
 
-
-
-
-
-
             } else {
                System.out.println("Player does not have role");
                JOptionPane.showMessageDialog(null, "You do not have a role", curPlayer.getName(),
@@ -459,14 +477,27 @@ public class BoardLayersListener extends JFrame {
 
                   curPlayer.setHasPickdTrue();
                   curPlayer.finishedMove();
-
                }
-
             }
             
          } else if (e.getSource() == bUpgrade) {
 
-            if (curPlayer.getRoom().equals("office")) {
+            if (curPlayer.getRoom().getName().equals("office")) {
+
+               ArrayList<Upgrade> upgrades = new ArrayList<>(curPlayer.getRoom().getUpgrades());
+
+               String[] upgradeList1D = new String[upgrades.size()];
+
+               for(int i = 0; i < upgrades.size(); i++){
+                  String boxText = "Level: " + upgrades.get(i).getLevel();
+                  boxText += ": " + upgrades.get(i).getCurrency();
+                  boxText += ": " + upgrades.get(i).getAmt();
+
+                  System.out.println(boxText);
+                  upgradeList1D[i] = boxText;
+               }
+
+               ComboBoxUpgrade upgradeBox = new ComboBoxUpgrade(upgradeList1D, curPlayer, upgrades);
 
             } else {
                System.out.println("Player not in office, cannot upgrade");
@@ -479,7 +510,6 @@ public class BoardLayersListener extends JFrame {
                System.out.println("Player already has a role");
                JOptionPane.showMessageDialog(null, "Player already has a role", curPlayer.getName(),
                      JOptionPane.ERROR_MESSAGE);
-               
 
             } else if ((curPlayer.getRoomName().equals("trailer")) || (curPlayer.getRoomName().equals("office"))) {
                System.out.println("You cannot take on roles in trailer or office");
@@ -493,78 +523,24 @@ public class BoardLayersListener extends JFrame {
                curPlayer.getRoom().getScene().printSceneInfo(curPlayer.getRoom().getOffCardRoleCount());
 
                ArrayList<Role> roles = new ArrayList<Role>();
-               
+
                roles.addAll(curPlayer.getRoom().getOffCardRoles());
-               
-               
+
                ArrayList<Role> tempRoles = new ArrayList<Role>();
                roles.addAll(curPlayer.getRoom().getScene().getRoles());
-               
+
                String[] roleNames = new String[roles.size()];
 
-               for(int i = 0; i < roles.size(); i++){
+               for (int i = 0; i < roles.size(); i++) {
                   String roleName = roles.get(i).getName();
                   roleNames[i] = roleName;
-                  System.out.println(roleName);
                }
-               
-               while (!curPlayer.hasRole()) {
-                  
-                  System.out.print("Select a role number: ");
-                  
-                  
-                  ComboBoxRoles gennusis = new ComboBoxRoles(roleNames, curPlayer, roles);
 
-                  
-                  if (curPlayer.getHasPickedRoom()) {
-                     String cardFront = curPlayer.getRoom().getCardFront();
-                  System.out.println("CardFront " + cardFront);
-                  
-                  roomNum = curPlayer.getRoomChoise();
-                  System.out.println(roomNum);
-                  curPlayer.setRoomChoise(roomNum);
-                  updateRoomCards();
-                  
-                  ImageIcon cIcon = new ImageIcon(cardFront);
-                  cardLabels[roomNum].setIcon(cIcon);
-                  
-                  curPlayer.setHasPickdTrue();
-                  curPlayer.finishedMove();
-                  
-                  int asdf = gennusis.comboBox.getSelectedIndex();
-                  System.out.println(asdf);
+               ComboBoxRoles gennusis = new ComboBoxRoles(roleNames, curPlayer, roles);
+               if (curPlayer.hasRole()) {
+
+                  System.out.println("Player has chosen role: " + curPlayer.getRoleName());
                }
-               
-               
-               int input = 1; //size of the offcard list
-               
-               // need to check if role is taken
-               if (input <= curPlayer.getRoom().getOffCardRoleCount()) {
-                  // player has chosen off card role
-                  
-                  
-                  
-                  if (!curPlayer.getRoom().isRoleTaken(input)) {
-                     curPlayer.setRole(curPlayer.getRoom().getOffCardRole(input - 1), false);
-                     curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
-                     
-                     } else {
-                        System.out.println("Role is already taken");
-                        JOptionPane.showMessageDialog(null, "Role is already taken",
-                              curPlayer.getName(), JOptionPane.ERROR_MESSAGE);
-                        
-                     }
-                  } else {
-                     // player has chosen on card role
-                     curPlayer.setRole(curPlayer.getRoom().getScene().getRole(input - 1), true);
-                     curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
-                     curPlayer.playerChoseCardRole();
-                  }
-
-                  System.out.println("Cannot accept that answer");
-
-               }
-               System.out.println("Player has chosen role: " + curPlayer.getRoleName());
 
             }
 

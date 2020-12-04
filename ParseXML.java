@@ -265,6 +265,7 @@ public class ParseXML {
 
         List<Room> addingRooms = new ArrayList<Room>();
         List<String> neighborsList = new ArrayList<String>();
+        List<Upgrade> upgradeList = new ArrayList<Upgrade>();
 
         Element root = d.getDocumentElement();
         NodeList offices = root.getElementsByTagName("office");
@@ -319,17 +320,19 @@ public class ParseXML {
                             String currency = upgrade.getAttributes().getNamedItem("currency").getNodeValue();
                             String amt = upgrade.getAttributes().getNamedItem("amt").getNodeValue();
 
-                            // System.out.println(" *level\t" + level);
-                            // System.out.println(" *currency\t" + currency);
-                            // System.out.println(" *amt \t" + amt);
-                            // System.out.println();
+                            System.out.println(k);
+                            System.out.println(" *level\t" + level);
+                            System.out.println(" *currency\t" + currency);
+                            System.out.println(" *amt \t" + amt);
+                            System.out.println();
+                            upgradeList.add(new Upgrade(level, currency, amt));
                         }
                         // System.out.println(currentNeighbor);
                     }
                 }
 
             } // for childnodes
-            addingRooms.add(new Room("office", neighborsList));
+            addingRooms.add(new Room("office", neighborsList, upgradeList));
               // System.out.println("\n");
 
         } // for set nodes

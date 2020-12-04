@@ -16,6 +16,7 @@ public class Room {
     private List<Boolean> shotList;
     private List<Player> onCardPlayers;
     private List<Player> offCardPlayers;
+    private List<Upgrade> upgrades;
     private HashMap<String, Integer> areaInfo;
     private List<HashMap<String, Integer>> nativePartsList;
     private List<HashMap<String, Integer>> takesAreaHashList;
@@ -52,6 +53,18 @@ public class Room {
         //roomNeighbors = convertNeighborsToRoomClass();
     }
 
+    public Room(String newName, List<String> neighborNames, List<Upgrade> Upgrades) {
+        name = newName;
+        neighbors = neighborNames;
+        shotList = new ArrayList<>();
+        offCardRoles = new ArrayList<>();
+        wrapped = false;
+        offCardPlayers = new ArrayList<>();
+        onCardPlayers = new ArrayList<>();
+        upgrades = Upgrades;
+        // roomNeighbors = convertNeighborsToRoomClass();
+    }
+
 
     //trying to get the room object so that I can easily saw it out 
     //ended up not liking this idea
@@ -81,6 +94,10 @@ public class Room {
 
     public void setViseted(){
         visited = true;
+    }
+
+    public List<Upgrade> getUpgrades(){
+        return upgrades;
     }
     
     public void printNeighbors() {
