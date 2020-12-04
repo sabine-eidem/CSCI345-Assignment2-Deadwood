@@ -398,6 +398,10 @@ public class BoardLayersListener extends JFrame {
                   if (roll >= budget) {
                      System.out.println("You did well in the shot!");
                      message3 = "You did well in the shot!";
+                     if (!curPlayer.getOnCard()) {
+                        curPlayer.addDollar();
+                        curPlayer.addCredit();
+                     }
 
 
                      currentRoom.takeOffAShot();
@@ -405,8 +409,8 @@ public class BoardLayersListener extends JFrame {
                      System.out.println("You did not do well in the shot");
                      message3 = "You did NOT do well in the shot!";
 
-                     if(curPlayer.getOnCard()){
-                        curPlayer.changeDollars(curPlayer.getDollars() + 1);
+                     if(!curPlayer.getOnCard()){
+                        curPlayer.addDollar();
                      }
                   }
 

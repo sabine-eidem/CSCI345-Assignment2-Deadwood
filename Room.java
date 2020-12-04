@@ -144,7 +144,7 @@ public class Room {
                 System.out.println("ITS A WRAP!");
                 //It's a wrap!
                 wrapped = true;
-                wrappedPayout();
+                //wrappedPayout();
                 return true;
             } else if(shotList.get(i) == false){
                 shotList.set(i, true);
@@ -217,18 +217,18 @@ public class Room {
 
     public void wrappedPayout(){
 
-        try{
+        // try{
 
-            for(int i = 0; i < offCardPlayers.size(); i ++){
-                offCardPlayers.get(i).printName();
-            }
+        //     for(int i = 0; i < offCardPlayers.size(); i ++){
+        //         offCardPlayers.get(i).printName();
+        //     }
     
-            for (int i = 0; i < onCardPlayers.size(); i++) {
-                onCardPlayers.get(i).printName();
-            }
-        } catch (Exception e){
+        //     for (int i = 0; i < onCardPlayers.size(); i++) {
+        //         onCardPlayers.get(i).printName();
+        //     }
+        // } catch (Exception e){
 
-        }
+        // }
 
 
     }

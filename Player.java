@@ -206,6 +206,14 @@ public class Player {
         return credits += amount;
     }
 
+    public void addDollar(){
+        dollars++;
+    }
+
+    public void addCredit(){
+        credits++;
+    }
+
     public int getDollars() {
         return dollars;
     }

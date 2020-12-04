@@ -116,7 +116,7 @@ public class Deadwood {
         // System.out.println("***************\n");
         // }
 
-        int days = 4;
+        int days = 40;
         int credits = 0;
         int rank = 1;
         // 2-3 players = 3 days
