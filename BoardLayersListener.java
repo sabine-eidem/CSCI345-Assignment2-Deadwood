@@ -142,18 +142,20 @@ public class BoardLayersListener extends JFrame {
       bPlayerRank = new JLabel(currPlayerRank);
       bPlayerRank.setBackground(Color.darkGray);
       bPlayerRank.setBounds(icon.getIconWidth() + 10, 320, 150, 20);
-
-      bPlayerCoins = new JLabel(currPlayerRank);
-      bPlayerCoins.setBackground(Color.darkGray);
-      bPlayerCoins.setBounds(icon.getIconWidth() + 10, 340, 150, 20);
-
+      
       bPlayerChips = new JLabel(currPlayerRank);
       bPlayerChips.setBackground(Color.darkGray);
-      bPlayerChips.setBounds(icon.getIconWidth() + 10, 360, 150, 20);
-
+      bPlayerChips.setBounds(icon.getIconWidth() + 10, 340, 150, 20);
+      
+      bPlayerCoins = new JLabel(currPlayerRank);
+      bPlayerCoins.setBackground(Color.darkGray);
+      bPlayerCoins.setBounds(icon.getIconWidth() + 10, 360, 150, 20);
+      
       bPlayerDollars = new JLabel(currPlayerRank);
       bPlayerDollars.setBackground(Color.darkGray);
       bPlayerDollars.setBounds(icon.getIconWidth() + 10, 380, 150, 20);
+
+
 
       
 
@@ -254,6 +256,13 @@ public class BoardLayersListener extends JFrame {
       bPlayerCoins.setText("Coins: " + Integer.toString(curPlayer.getCredits()));
       bPlayerChips.setText("Chips: " + Integer.toString(curPlayer.getChips()));
       bPlayerDollars.setText("Dollars: " + Integer.toString(curPlayer.getDollars()));
+
+
+
+
+      if(curPlayer.getRoom().getWraped()){
+         curPlayer.finishedRole();
+      }
    }
 
    public void endGame() {
@@ -364,16 +373,27 @@ public class BoardLayersListener extends JFrame {
                   if (roll >= budget) {
                      System.out.println("You did well in the shot!");
                      message3 = "You did well in the shot!";
+
+
                      currentRoom.takeOffAShot();
                   } else {
                      System.out.println("You did not do well in the shot");
                      message3 = "You did NOT do well in the shot!";
+
+                     if(curPlayer.getOnCard()){
+                        curPlayer.changeDollars(curPlayer.getDollars() + 1);
+                     }
                   }
 
                   String totalMessage = message1 + "\n" + message2 + "\n" + message3;
 
                   JOptionPane.showMessageDialog(null, totalMessage, curPlayer.getName(),
-                        JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.INFORMATION_MESSAGE);
+
+
+                  if(currentRoom.getWraped()){
+                     JOptionPane.showMessageDialog(null, "Its a wrap!", curPlayer.getName(), JOptionPane.INFORMATION_MESSAGE);
+                  }
 
                   currentRoom.printShotList();
                } else {
@@ -474,6 +494,9 @@ public class BoardLayersListener extends JFrame {
                ArrayList<Role> roles = new ArrayList<Role>();
 
                roles.addAll(curPlayer.getRoom().getOffCardRoles());
+
+
+               ArrayList<Role> tempRoles = new ArrayList<Role>();
                roles.addAll(curPlayer.getRoom().getScene().getRoles());
 
                String[] roleNames = new String[roles.size()];

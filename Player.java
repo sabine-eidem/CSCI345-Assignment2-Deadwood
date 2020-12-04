@@ -89,15 +89,53 @@ public class Player {
         return onCard;
     }
 
-    public void setRole(Role newRole){
+    public void setRole(Role newRole, boolean onCard){
 
         if(newRole.getRank() <= rank){
             currentRole = newRole;
-            playersPos = newRole.getAreaHashMap();
+
+            HashMap<String, Integer> tempHash = new HashMap<String, Integer>();
+
+            if(onCard){
+                //add current player position to card ash
+
+                int x, y;
+
+                x = newRole.getAreaHashMap().get("x");
+                x += currentRoom.getArea().get("x");
+
+                y = newRole.getAreaHashMap().get("y");
+                y += currentRoom.getArea().get("y");
+
+                tempHash.put("x", x);
+                tempHash.put("y", y);
+
+            } else {
+                tempHash = newRole.getAreaHashMap();
+            }
+
+            System.out.println("problem with on card");
+            playersPos = tempHash;
             hasRole = true;
 
         } else {
             //System.out.println("Cannot take that role");
+        }
+    }
+
+    public void setRole(Role newRole) {
+
+        if (newRole.getRank() <= rank) {
+            currentRole = newRole;
+
+            HashMap<String, Integer> tempHash = new HashMap<String, Integer>();
+
+            
+            playersPos = tempHash;
+            hasRole = true;
+
+        } else {
+            // System.out.println("Cannot take that role");
         }
     }
 
@@ -125,6 +163,11 @@ public class Player {
 
     public boolean hasRole() {
         return hasRole;
+    }
+
+    public void finishedRole(){
+        chips = 0;
+        hasRole = false;
     }
 
     public Role getRole() {
