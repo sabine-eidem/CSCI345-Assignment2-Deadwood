@@ -107,10 +107,10 @@ public class Player {
                 int x, y;
 
                 x = newRole.getAreaHashMap().get("x");
-                x += currentRoom.getArea().get("x");
+                x += playersPos.get("x");
 
                 y = newRole.getAreaHashMap().get("y");
-                y += currentRoom.getArea().get("y");
+                y += playersPos.get("y");
 
                 tempHash.put("x", x);
                 tempHash.put("y", y);

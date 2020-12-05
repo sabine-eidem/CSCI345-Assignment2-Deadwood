@@ -37,9 +37,10 @@ public class ComboBoxRoles extends JFrame implements ActionListener {
             // need to check if role is taken
 
             System.out.println(input);
-            if (input <= curPlayer.getRoom().getOffCardRoleCount()) {
+            if (input < curPlayer.getRoom().getOffCardRoleCount()-1) {
                 // player has chosen off card role
 
+                System.out.println(curPlayer.getRoom().getOffCardRoleCount()-1);
                 if (!curPlayer.getRoom().getOffCardRole(input).isTaken()) {
 
                     if (rank < curPlayer.getRoom().getOffCardRole(input).getRank()) {
@@ -72,9 +73,11 @@ public class ComboBoxRoles extends JFrame implements ActionListener {
                                 JOptionPane.ERROR_MESSAGE);
 
                     } else {
+                        JOptionPane.showMessageDialog(null, "Player got card role", curPlayer.getName(),
+                                JOptionPane.ERROR_MESSAGE);
 
                         curPlayer.setRole(curPlayer.getRoom().getScene().getRole(input), true);
-                        curPlayer.getRoom().addPlayerToOffCardList(curPlayer);
+                        curPlayer.getRoom().addPlayerToCardList(curPlayer);
 
                         // set as taken
                         curPlayer.getRoom().getScene().getRole(input).take();

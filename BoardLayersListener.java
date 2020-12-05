@@ -262,7 +262,10 @@ public class BoardLayersListener extends JFrame {
       curPlayer.getRoom().setViseted();
 
       HashMap<String, Integer> pos = curPlayer.getPlayerPos();
-      ImageIcon pIcon = curPlayer.getPICon();
+
+
+      ImageIcon pIcon = new ImageIcon("pics/dice/" + curPlayer.getDiceName());
+     
 
      
 
